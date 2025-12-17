@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta Agency | Infraestructura de Negocio High-Ticket</title>
+    <meta name="description" content="Instalación de Sistemas de Conversión para Marcas Personales. Transformamos audiencia en clientes High-Ticket.">
+    
+    <!-- Tailwind CSS (CDN para prototipado rápido y eficiente) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes: Inter (La más cercana a San Francisco de Apple para web) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Iconos: Phosphor Icons (Más limpios que FontAwesome) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        delta: {
+                            500: '#FF5722', // Naranja Delta Principal
+                            600: '#E64A19', // Hover
+                            900: '#1a0500', // Fondo muy oscuro naranja
+                        },
+                        dark: {
+                            900: '#050505', // Casi negro absoluto (Apple Style)
+                            800: '#0a0a0a',
+                            700: '#121212',
+                            card: '#1c1c1e' // Apple dark gray
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'delta-gradient': 'linear-gradient(135deg, #FF8A65 0%, #FF5722 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Ajustes finos para sensación Premium */
+        body {
+            background-color: #050505;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Scrollbar minimalista */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5722;
+        }
+
+        /* Animaciones sutiles */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* El logo Delta (Triángulo Gradiente CSS puro) */
+        .delta-logo {
+            width: 0; 
+            height: 0; 
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 26px solid #FF5722;
+            position: relative;
+        }
+        .delta-logo::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 14px solid #050505;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- NAV: Flotante y Minimalista -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-dark-900/80 backdrop-blur-md border-b border-white/5"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="delta-logo filter drop-shadow-[0_0_8px_rgba(255,87,34,0.5)]"></div>
+                    <span class="text-xl font-bold tracking-tight text-white">DELTA</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#filosofia" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Filosofía</a>
+                    <a href="#sistema" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">El Sistema</a>
+                    <a href="#stack" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Stack Tecnológico</a>
+                    <a href="#contacto" class="bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition-all transform hover:scale-105">
+                        Agendar Auditoría
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-dark-800 border-b border-white/10">
+            <div class="px-4 pt-2 pb-6 space-y-4">
+                <a href="#filosofia" class="block text-base font-medium text-gray-300 hover:text-white">Filosofía</a>
+                <a href="#sistema" class="block text-base font-medium text-gray-300 hover:text-white">El Sistema</a>
+                <a href="#stack" class="block text-base font-medium text-gray-300 hover:text-white">Stack Tecnológico</a>
+                <a href="#contacto" class="block w-full text-center bg-delta-500 text-white px-4 py-3 rounded-lg font-bold">
+                    Agendar Auditoría
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: Polarizante y Directo -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-delta-500/20 rounded-full blur-[120px] -z-10"></div>
+        <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 fade-in-up delay-100">
+                <span class="w-2 h-2 rounded-full bg-delta-500 animate-pulse"></span>
+                <span class="text-xs font-medium text-gray-300 tracking-wide uppercase">Solo para Marcas Personales que Facturan</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white mb-6 leading-tight fade-in-up delay-200">
+                Dejá de jugar al Influencer. <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Volvete un Empresario.</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed fade-in-up delay-300">
+                No necesitás más seguidores ni métricas de vanidad. Necesitás una <span class="text-white font-semibold">infraestructura de conversión</span> que transforme tu audiencia en clientes High-Ticket ($1.200+) mientras dormís.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up delay-400">
+                <a href="#contacto" class="w-full sm:w-auto px-8 py-4 bg-delta-500 hover:bg-delta-600 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,87,34,0.4)] flex items-center justify-center gap-2">
+                    Instalar Sistema Delta
+                    <i class="ph ph-arrow-right font-bold"></i>
+                </a>
+                <a href="#filosofia" class="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/20 text-white rounded-full font-medium hover:bg-white/5 transition-colors">
+                    Ver cómo funciona
+                </a>
+            </div>
+            
+            <p class="mt-6 text-xs text-gray-500 fade-in-up delay-500">
+                Infraestructura DFY (Done For You) • Limitado a 5 clientes/mes
+            </p>
+        </div>
+    </section>
+
+    <!-- INSIGHT / PAIN SECTION: Estilo Cubria/Hormozi -->
+    <section id="filosofia" class="py-24 bg-dark-800 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                
+                <div class="space-y-8 fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">
+                        El problema no es tu contenido.<br>
+                        <span class="text-delta-500">Es tu Backend.</span>
+                    </h2>
+                    <div class="space-y-6 text-gray-400 text-lg leading-relaxed">
+                        <p>
+                            Estás quemado de crear reels, stories y contenido educativo gratuito esperando que "algún día" te compren. Eso es esperanza, no estrategia.
+                        </p>
+                        <p>
+                            Mientras vos perseguís likes, tu competencia está instalando sistemas. Tienen pasarelas de pago internacionales, automatizaciones que filtran curiosos y embudos que cierran ventas solos.
+                        </p>
+                        <div class="pl-4 border-l-4 border-delta-500 italic text-white">
+                            "Si tu negocio depende de que vos estés pegado al celular contestando DMs, no tenés un negocio. Tenés un empleo mal pago."
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico Visual de comparación -->
+                <div class="relative fade-in-up delay-200">
+                    <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-delta-500/10 rounded-full blur-3xl group-hover:bg-delta-500/20 transition-all"></div>
+                        
+                        <div class="flex flex-col gap-6">
+                            <!-- Situación A (Ellos) -->
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-red-500/5 border border-red-500/10">
+                                <div class="bg-red-500/10 p-2 rounded-lg text-red-500">
+                                    <i class="ph ph-x-circle text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold">Tu situación actual</h3>
+                                    <p class="text-sm text-gray-400 mt-1">Cobros por transferencia manual, DMs saturados, facturación inconsistente, audiencia que pide todo gratis.</p>
+                                </div>
+                            </div>
+
+                            <!-- Flecha -->
+                            <div class="flex justify-center text-gray-600">
+                                <i class="ph ph-arrow-down text-2xl animate-bounce"></i>
+                            </div>
+
+                            <!-- Situación B (Delta) -->
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-green-500/5 border border-green-500/10">
+                                <div class="bg-green-500/10 p-2 rounded-lg text-green-500">
+                                    <i class="ph ph-check-circle text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold">Infraestructura Delta</h3>
+                                    <p class="text-sm text-gray-400 mt-1">Cobros en USD automáticos, leads pre-calificados por AI, cashflow predecible, libertad de tiempo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- STACK TECNOLÓGICO: La Infraestructura -->
+    <section id="stack" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 fade-in-up">
+                <h2 class="text-sm font-bold tracking-widest text-delta-500 uppercase mb-3">Ingeniería de Ventas</h2>
+                <h3 class="text-3xl md:text-5xl font-bold text-white">El Ecosistema que instalamos en tu negocio</h3>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">No te vendemos herramientas sueltas. Te instalamos un motor V8 listo para correr.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-delta-500/50 transition-colors group fade-in-up delay-100">
+                    <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-currency-dollar text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Finanzas Globales</h4>
+                    <p class="text-sm text-gray-400 mb-4">Lemon Squeezy + Takenos.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Cobrá en USD a clientes de cualquier parte del mundo sin fricción. Estructura fiscal eficiente para traer tu dinero a Argentina o Latam sin perder en el cambio.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-delta-500/50 transition-colors group fade-in-up delay-200">
+                    <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-robot text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Automatización (AI Ops)</h4>
+                    <p class="text-sm text-gray-400 mb-4">n8n + ManyChat + OpenAI.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Tu Instagram responde solo. Tu CRM se actualiza solo. Tus leads son calificados por IA antes de que hables con ellos. Filtramos a los curiosos, te dejamos los compradores.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:border-delta-500/50 transition-colors group fade-in-up delay-300">
+                    <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph ph-funnel text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Embudos de Conversión</h4>
+                    <p class="text-sm text-gray-400 mb-4">Notion + Super.so + VSL.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Landings minimalistas que cargan en milisegundos. Copys persuasivos basados en Insights, no en beneficios aburridos. Diseñados para cerrar High-Ticket.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASE STUDY: Ascender -->
+    <section class="py-24 bg-dark-800 border-t border-white/5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-3xl p-1 md:p-2 border border-white/10 overflow-hidden fade-in-up">
+                <div class="bg-dark-900 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+                    <!-- Background Accent -->
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-delta-500/20 rounded-full blur-[80px]"></div>
+
+                    <div class="flex flex-col md:flex-row gap-12 items-center relative z-10">
+                        <div class="flex-1 space-y-6">
+                            <div class="inline-block px-3 py-1 bg-white/10 rounded text-xs font-bold tracking-wide text-white">CASE STUDY</div>
+                            <h3 class="text-3xl md:text-4xl font-bold text-white">Ascender: Nuestro Laboratorio.</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                No teorizamos. <span class="text-white font-medium">Ascender</span> es la marca personal co-fundada por Juanma Merodio donde probamos cada sistema antes de vendértelo.
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-3 text-gray-300">
+                                    <i class="ph-fill ph-check-circle text-delta-500"></i>
+                                    <span>Sistema de Upsell automático a High-Ticket.</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-300">
+                                    <i class="ph-fill ph-check-circle text-delta-500"></i>
+                                    <span>Funnel híbrido (VSL + Setter AI).</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-gray-300">
+                                    <i class="ph-fill ph-check-circle text-delta-500"></i>
+                                    <span>Facturación internacional automatizada.</span>
+                                </li>
+                            </ul>
+                            <div class="pt-4">
+                                <p class="text-sm text-gray-500 italic">"Lo que instalamos en tu negocio es exactamente lo que usamos para escalar el nuestro."</p>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full relative">
+                            <!-- Abstract Representation of Funnel -->
+                            <div class="aspect-video bg-dark-800 rounded-xl border border-white/10 flex items-center justify-center relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-dark-900 to-transparent"></div>
+                                <div class="text-center z-10 p-6">
+                                    <div class="text-5xl font-black text-white mb-2 tracking-tighter">$1,200+</div>
+                                    <div class="text-sm text-gray-400 uppercase tracking-widest">Ticket Promedio</div>
+                                </div>
+                                <!-- Decorative UI elements -->
+                                <div class="absolute bottom-4 left-4 right-4 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-delta-500 w-3/4 animate-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / OFFER SECTION -->
+    <section id="contacto" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-delta-500/5"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-6 fade-in-up">
+                ¿Listo para construir un negocio de verdad?
+            </h2>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto fade-in-up delay-100">
+                La instalación de la Infraestructura Delta tiene un costo base de <span class="text-white font-bold">$1,200 USD</span> + un % de Revenue Share. Solo trabajamos con marcas que ya tienen tracción y están listas para escalar.
+            </p>
+            
+            <div class="bg-dark-900 p-8 rounded-2xl border border-white/10 max-w-lg mx-auto shadow-2xl fade-in-up delay-200">
+                <form class="space-y-4 text-left" onsubmit="event.preventDefault(); alert('En un entorno real, esto redirigiría a Typeform o Calendly para filtrar el lead.');">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Tu Nombre</label>
+                        <input type="text" class="w-full bg-dark-800 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-delta-500 transition-colors" placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Instagram de tu Marca</label>
+                        <input type="text" class="w-full bg-dark-800 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-delta-500 transition-colors" placeholder="@usuario">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Facturación Mensual Actual (USD)</label>
+                        <select class="w-full bg-dark-800 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-delta-500 transition-colors">
+                            <option value="" disabled selected>Seleccioná una opción</option>
+                            <option value="0-1000">Menos de $1,000 (No aplicás)</option>
+                            <option value="1000-5000">$1,000 - $5,000</option>
+                            <option value="5000+">Más de $5,000</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-delta-500 hover:bg-delta-600 text-white font-bold py-4 rounded-lg text-lg transition-all transform active:scale-95 shadow-lg mt-4">
+                        Aplicar a Auditoría
+                    </button>
+                </form>
+                <p class="text-xs text-center text-gray-500 mt-4">
+                    Al enviar este formulario aceptás ser contactado por el equipo de Delta Agency.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark-900 border-t border-white/5 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="delta-logo transform scale-75"></div>
+                <span class="text-lg font-bold text-white">DELTA AGENCY</span>
+            </div>
+            <div class="text-sm text-gray-500 text-center md:text-right">
+                <p>&copy; 2024 Delta Agency. Todos los derechos reservados.</p>
+                <p class="mt-1">Built by Juanma Merodio. Powered by Insights.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts simples para interacción -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const navbar = document.getElementById('navbar');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Sticky Navbar effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
