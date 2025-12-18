@@ -425,15 +425,79 @@
 
     <!-- Scripts simples para interacción -->
     <script>
+            // ==========================================
+        // CONFIGURACIÓN DELTA (Backend Connection)
+        // ==========================================
+        // PEGAR ACÁ LA URL QUE OBTUVISTE AL PUBLICAR EL APPSCRIPT:
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQYMjmE7EO-H19Ys9-e1ZI76zOf72Dmw7_nrs0GfnCZK9Lxky--lnl4Qn4UctiYTubog/exec"; 
+        const CALENDLY_URL = "https://calendly.com/delta-growth-agency/auditoriadelta";
+
+        // Lógica del Formulario
+        const form = document.getElementById('delta-application-form');
+        const btn = document.getElementById('submit-btn');
+        const btnText = btn.querySelector('span');
+        const btnIcon = btn.querySelector('i');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 1. UX: Feedback de carga (Evitar doble clic)
+            const originalText = btnText.innerText;
+            btnText.innerText = "Procesando...";
+            btnIcon.classList.remove('ph-arrow-right');
+            btnIcon.classList.add('ph-spinner', 'animate-spin'); // Icono de carga girando
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // 2. Capturar datos del formulario
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            // 3. Enviar a Google Sheets (Delta API)
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Fundamental para que funcione con AppScript sin errores de CORS
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                // 4. ÉXITO: Redirección Inmediata (Mid-Funnel)
+                btnText.innerText = "¡Aceptado! Redirigiendo...";
+                btn.classList.replace('bg-delta-500', 'bg-green-600');
+                
+                // Pequeño delay de 500ms para que el usuario lea el mensaje y chau
+                setTimeout(() => {
+                    window.location.href = CALENDLY_URL;
+                }, 800);
+            })
+            .catch(error => {
+                console.error('Error Delta Ops:', error);
+                alert("Hubo un error de conexión. Por favor contactanos por Instagram @deltaops.");
+                
+                // Resetear botón
+                btnText.innerText = originalText;
+                btnIcon.classList.add('ph-arrow-right');
+                btnIcon.classList.remove('ph-spinner', 'animate-spin');
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            });
+        });
+
         // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-btn');
+        const menuBtn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         const navbar = document.getElementById('navbar');
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+        if(menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
 
+        // Sticky Navbar effect
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 navbar.classList.add('shadow-lg');
@@ -443,10 +507,7 @@
         });
 
         // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1
-        };
-
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
