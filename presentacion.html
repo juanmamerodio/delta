@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta OS - Masterclass</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        delta: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            panel: '#111111',
+                            border: '#222222',
+                            accent: '#FF5F05', // Naranja Tech Delta
+                            text: '#e0e0e0',
+                            muted: '#666666'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700;900&display=swap');
+
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            overflow: hidden; /* Prevent scrolling, act like a presentation */
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+            padding: 2rem;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* Step Animations */
+        .step-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .step-item.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glow effects */
+        .glow-text { text-shadow: 0 0 20px rgba(255, 95, 5, 0.5); }
+        .glow-border { box-shadow: 0 0 15px rgba(255, 95, 5, 0.1); border: 1px solid rgba(255, 95, 5, 0.3); }
+
+        /* DELTA LOGO CSS PURE */
+        .delta-logo {
+            width: 0; height: 0; 
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 22px solid #FF5520;
+            position: relative;
+            filter: drop-shadow(0 0 15px rgba(255,85,32,0.4)); /* Glow exterior al logo */
+        }
+        
+        .delta-logo::after {
+            content: ''; position: absolute;
+            top: 5px; left: -7px;
+            width: 0; height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            /* Match exacto con el bg de la web para el hueco */
+            border-bottom: 13px solid #050505; 
+        }
+
+        .delta-logo-large {
+            transform: scale(2.5);
+            margin-bottom: 1rem;
+        }
+
+        /* Custom Scrollbar for inputs */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-delta-accent selection:text-black">
+
+    <!-- Top Navigation / Branding -->
+    <header class="fixed top-0 left-0 w-full p-6 z-50 flex justify-between items-center pointer-events-none">
+        <div class="flex items-center gap-3">
+            <div class="delta-logo mx-1"></div>
+            <span class="font-mono text-delta-muted text-sm tracking-widest">DELTA_OS_v2.0</span>
+        </div>
+        <div class="text-delta-muted font-mono text-xs" id="slide-counter">
+            1 / 6
+        </div>
+    </header>
+
+    <main class="relative w-full h-screen">
+
+        <!-- SLIDE 1: EL GANCHO -->
+        <div class="slide active flex flex-col items-center justify-center text-center">
+            <div class="max-w-4xl">
+                <h1 class="text-6xl md:text-7xl font-black mb-6 leading-tight tracking-tight">
+                    El problema no es tu <span class="text-delta-accent glow-text">código</span>.
+                </h1>
+                <p class="text-2xl text-delta-muted mb-12 step-item font-mono">
+                    Es tu sistema de ventas.
+                </p>
+                <div class="step-item text-delta-muted border border-delta-border bg-delta-panel px-6 py-4 rounded-lg inline-block">
+                    <i class="fa-solid fa-terminal mr-2"></i> run masterclass.exe
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: EL CUELLO DE BOTELLA -->
+        <div class="slide flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full">
+                <h2 class="text-sm font-mono text-delta-accent mb-2">/ El Diagnóstico</h2>
+                <h3 class="text-4xl font-bold mb-10">Dependencias Tóxicas</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="step-item bg-delta-panel border border-delta-border p-6 rounded-xl">
+                        <i class="fa-solid fa-briefcase text-3xl mb-4 text-delta-muted"></i>
+                        <h4 class="text-xl font-bold mb-2">Upwork / Fiverr</h4>
+                        <p class="text-sm text-delta-muted">Peleás por precio, no por valor. Competís con 50 propuestas más baratas.</p>
+                    </div>
+                    <div class="step-item bg-delta-panel border border-delta-border p-6 rounded-xl">
+                        <i class="fa-solid fa-comments text-3xl mb-4 text-delta-muted"></i>
+                        <h4 class="text-xl font-bold mb-2">Boca a Boca</h4>
+                        <p class="text-sm text-delta-muted">Incontrolable. No podés predecir matemáticamente cuándo llega el próximo cliente.</p>
+                    </div>
+                    <div class="step-item bg-delta-panel border border-delta-border p-6 rounded-xl">
+                        <i class="fa-solid fa-building text-3xl mb-4 text-delta-muted"></i>
+                        <h4 class="text-xl font-bold mb-2">Tercerizadoras</h4>
+                        <p class="text-sm text-delta-muted">Te pagan el 20% de lo que le cobran al cliente final por TU trabajo y arquitectura.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: LA OFERTA -->
+        <div class="slide flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full">
+                <h2 class="text-sm font-mono text-delta-accent mb-2">/ Fase 1: Arquitectura</h2>
+                <h3 class="text-4xl font-bold mb-8">La Oferta "Anti-Commodity"</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="step-item border border-red-500/30 bg-red-500/5 p-8 rounded-xl">
+                        <div class="text-red-500 font-mono mb-4 text-sm">❌ Lo que vendés hoy (Features)</div>
+                        <h4 class="text-2xl font-bold mb-4">"Desarrollo Web / Cloud"</h4>
+                        <div class="space-y-2 text-delta-muted font-mono text-sm">
+                            > Te migro el servidor a AWS<br>
+                            > Uso Docker y Kubernetes<br>
+                            > Mantenimiento de Bases de Datos
+                        </div>
+                        <div class="mt-6 flex items-center justify-between border-t border-red-500/20 pt-4">
+                            <span class="text-delta-muted">Percepción del cliente:</span>
+                            <span class="text-red-400 font-mono">"Un gasto más"</span>
+                        </div>
+                    </div>
+
+                    <div class="step-item border border-delta-accent/50 bg-delta-accent/5 p-8 rounded-xl glow-border">
+                        <div class="text-delta-accent font-mono mb-4 text-sm">✅ Lo que vas a vender (Resultados Elite)</div>
+                        <h4 class="text-2xl font-bold mb-6 text-white">"Transformaciones High Ticket"</h4>
+                        <div class="space-y-4 text-delta-muted font-mono text-sm">
+                            <p>> <strong class="text-white">Mentorías DWY (Done With You):</strong> "Te transfiero mi cerebro tecnológico para que tu equipo escale tus sistemas internos."</p>
+                            <p>> <strong class="text-white">Servicios DFY (Done For You):</strong> "Asumo el riesgo, te instalo la infraestructura y te garantizo el ROI por contrato."</p>
+                            <p>> <strong class="text-delta-accent bg-delta-accent/10 px-2 py-1 rounded">BizOpp Tech:</strong> Transformás tu conocimiento en una oportunidad de negocio. Resolvés el cuello de botella técnico del mercado.</p>
+                        </div>
+                        <div class="mt-8 flex items-center justify-between border-t border-delta-border pt-4">
+                            <span class="text-delta-muted">Efecto en la mente del cliente:</span>
+                            <span class="text-delta-accent font-bold font-mono text-xl">"Autoridad Absoluta"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: CALCULADORA COI -->
+        <div class="slide flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full h-full flex flex-col justify-center">
+                <h2 class="text-sm font-mono text-delta-accent mb-2">/ Análisis Cuantitativo</h2>
+                <h3 class="text-4xl font-bold mb-8">El Costo de tu Inacción (COI)</h3>
+                <p class="text-delta-muted mb-8 text-lg step-item">Hagamos los números en vivo. Esto es lo que estás dejando en la mesa cada mes.</p>
+
+                <div class="step-item bg-delta-panel border border-delta-border rounded-xl p-8 relative overflow-hidden glow-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-mono text-white mb-6 border-b border-delta-border pb-2">Tu Realidad Hoy</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-mono text-delta-muted mb-1">Precio Promedio por Proyecto (USD)</label>
+                                    <input type="number" id="calc-current-price" value="500" class="w-full bg-black border border-delta-border rounded p-3 text-white font-mono focus:border-delta-accent focus:outline-none transition-colors" oninput="calculateROI()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-mono text-delta-muted mb-1">Clientes por Mes</label>
+                                    <input type="number" id="calc-current-clients" value="3" class="w-full bg-black border border-delta-border rounded p-3 text-white font-mono focus:border-delta-accent focus:outline-none transition-colors" oninput="calculateROI()">
+                                </div>
+                                <div class="pt-4 mt-4 border-t border-delta-border">
+                                    <span class="text-delta-muted text-sm">Facturación Actual: </span>
+                                    <span class="text-xl font-bold text-white font-mono" id="calc-current-total">$1,500</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div class="hidden md:block absolute -left-4 top-0 bottom-0 w-px bg-delta-border"></div>
+                            <h4 class="text-xl font-mono text-delta-accent mb-6 border-b border-delta-border pb-2">Con Sistema Delta</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-mono text-delta-muted mb-1">Nuevo Precio Reposicionado (USD)</label>
+                                    <input type="number" id="calc-delta-price" value="2500" class="w-full bg-black border border-delta-accent/30 rounded p-3 text-delta-accent font-mono focus:border-delta-accent focus:outline-none transition-colors" oninput="calculateROI()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-mono text-delta-muted mb-1">Clientes por Mes (Sistema Predecible)</label>
+                                    <input type="number" id="calc-delta-clients" value="3" class="w-full bg-black border border-delta-accent/30 rounded p-3 text-delta-accent font-mono focus:border-delta-accent focus:outline-none transition-colors" oninput="calculateROI()">
+                                </div>
+                                <div class="pt-4 mt-4 border-t border-delta-accent/30">
+                                    <span class="text-delta-accent text-sm">Facturación Delta: </span>
+                                    <span class="text-3xl font-bold text-delta-accent font-mono glow-text" id="calc-delta-total">$7,500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-black/50 border border-red-500/30 rounded-lg p-4 text-center">
+                        <span class="text-delta-muted font-mono text-sm">Dinero perdido por no tener un sistema: </span>
+                        <span class="text-red-500 font-bold font-mono text-2xl" id="calc-lost-revenue">-$6,000 / mes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: EL EMBUDO -->
+        <div class="slide flex flex-col justify-center">
+            <div class="max-w-5xl mx-auto w-full">
+                <h2 class="text-sm font-mono text-delta-accent mb-2">/ Fase 2 y 3: Implementación Inbound</h2>
+                <h3 class="text-4xl font-bold mb-10">Tu Ecosistema Automatizado</h3>
+                
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <!-- Step 1 -->
+                    <div class="step-item flex-1 bg-delta-panel border border-delta-border rounded-xl p-6 w-full relative">
+                        <i class="fa-brands fa-instagram text-3xl mb-4 text-delta-muted"></i>
+                        <h4 class="font-bold text-white">1. Marca Personal (IG)</h4>
+                        <p class="text-xs text-delta-muted mt-2 font-mono">Videos de "Insight" que rompen creencias limitantes. Atraés clientes que YA saben que te necesitan y tienen con qué pagar.</p>
+                    </div>
+
+                    <div class="step-item hidden md:block text-delta-border text-2xl"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step-item md:hidden text-delta-border text-2xl my-2"><i class="fa-solid fa-arrow-down"></i></div>
+
+                    <!-- Step 2 -->
+                    <div class="step-item flex-1 bg-delta-panel border border-delta-accent/50 glow-border rounded-xl p-6 w-full relative transform scale-105 z-10 shadow-[0_0_30px_rgba(255,95,5,0.15)]">
+                        <i class="fa-solid fa-robot text-3xl mb-4 text-delta-accent"></i>
+                        <h4 class="font-bold text-white">2. ManyChat + VSL</h4>
+                        <p class="text-xs text-delta-muted mt-2 font-mono">Comentan una palabra clave ("SISTEMA"). El bot los pre-califica y les entrega un VSL letal que destruye objeciones en automático.</p>
+                    </div>
+
+                    <div class="step-item hidden md:block text-delta-border text-2xl"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="step-item md:hidden text-delta-border text-2xl my-2"><i class="fa-solid fa-arrow-down"></i></div>
+
+                    <!-- Step 3 -->
+                    <div class="step-item flex-1 bg-delta-panel border border-delta-border rounded-xl p-6 w-full relative">
+                        <i class="fa-solid fa-phone text-3xl mb-4 text-delta-muted"></i>
+                        <h4 class="font-bold text-white">3. Cierre Consultivo</h4>
+                        <p class="text-xs text-delta-muted mt-2 font-mono">Llamada de ventas predecible. El prospecto ya consumió tu valor y autoridad; solo entra al Zoom para pasar la tarjeta.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: CTA -->
+        <div class="slide flex flex-col justify-center">
+            <div class="max-w-3xl mx-auto w-full flex flex-col items-center justify-center text-center">
+                
+                <div class="step-item flex justify-center w-full mb-10">
+                    <div class="delta-logo delta-logo-large"></div>
+                </div>
+                
+                <h3 class="text-5xl font-bold mb-6 step-item">Tu tiempo vale código,<br>no fricción operativa.</h3>
+                <p class="text-xl text-delta-muted mb-10 step-item">
+                    Nosotros construimos tu motor de ventas orgánico.<br>Vos seguís haciendo lo que mejor sabés hacer.
+                </p>
+
+                <div class="step-item">
+                    <button class="bg-delta-accent text-black font-bold text-lg px-8 py-4 rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,95,5,0.3)] w-full md:w-auto mx-auto cursor-pointer" onclick="alert('Redirigiendo a Calendly...')">
+                        Agendar Auditoría Gratuita <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <p class="text-xs font-mono text-delta-muted mt-4">Link en la descripción del video</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Navigation Hints -->
+    <div class="fixed bottom-6 right-6 font-mono text-xs text-delta-muted flex gap-4 bg-black/50 p-2 rounded border border-delta-border z-50 pointer-events-none">
+        <span><kbd class="bg-delta-panel border border-delta-border px-1 rounded">←</kbd> Prev</span>
+        <span><kbd class="bg-delta-panel border border-delta-border px-1 rounded">SPACE</kbd> / <kbd class="bg-delta-panel border border-delta-border px-1 rounded">→</kbd> Next</span>
+    </div>
+
+    <script>
+        // --- Calculadora Interactiva ---
+        function formatMoney(num) {
+            return '$' + num.toLocaleString('en-US');
+        }
+
+        function calculateROI() {
+            const currentPrice = parseFloat(document.getElementById('calc-current-price').value) || 0;
+            const currentClients = parseFloat(document.getElementById('calc-current-clients').value) || 0;
+            const deltaPrice = parseFloat(document.getElementById('calc-delta-price').value) || 0;
+            const deltaClients = parseFloat(document.getElementById('calc-delta-clients').value) || 0;
+
+            const currentTotal = currentPrice * currentClients;
+            const deltaTotal = deltaPrice * deltaClients;
+            const lostRevenue = deltaTotal - currentTotal;
+
+            document.getElementById('calc-current-total').innerText = formatMoney(currentTotal);
+            document.getElementById('calc-delta-total').innerText = formatMoney(deltaTotal);
+            document.getElementById('calc-lost-revenue').innerText = '-' + formatMoney(lostRevenue) + ' / mes';
+        }
+
+        // --- Sistema de Presentación ---
+        let currentSlideIndex = 0;
+        let slides = [];
+        let currentSteps = [];
+        let currentStepIndex = -1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            slides = Array.from(document.querySelectorAll('.slide'));
+            updateCounter();
+            
+            // Inicializar la calculadora con los valores por defecto
+            calculateROI();
+
+            // Event Listeners para el teclado
+            document.addEventListener('keydown', (e) => {
+                // Evitar que el espacio cambie de slide si estamos tipeando en la calculadora
+                if (e.target.tagName.toLowerCase() === 'input') return;
+
+                if (e.key === ' ' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    next();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prev();
+                }
+            });
+
+            // Iniciar la primera slide
+            showSlide(0);
+        });
+
+        function updateCounter() {
+            document.getElementById('slide-counter').innerText = `${currentSlideIndex + 1} / ${slides.length}`;
+        }
+
+        function showSlide(index) {
+            // Ocultar todas
+            slides.forEach(s => s.classList.remove('active'));
+            
+            // Mostrar la actual
+            slides[index].classList.add('active');
+            
+            // Resetear pasos de la slide actual
+            currentSteps = Array.from(slides[index].querySelectorAll('.step-item'));
+            currentSteps.forEach(s => s.classList.remove('revealed'));
+            currentStepIndex = -1;
+            
+            updateCounter();
+        }
+
+        function next() {
+            if (currentStepIndex < currentSteps.length - 1) {
+                // Mostrar el siguiente paso en la slide actual
+                currentStepIndex++;
+                currentSteps[currentStepIndex].classList.add('revealed');
+            } else if (currentSlideIndex < slides.length - 1) {
+                // Avanzar a la siguiente slide
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        function prev() {
+            if (currentStepIndex >= 0) {
+                // Ocultar el paso actual
+                currentSteps[currentStepIndex].classList.remove('revealed');
+                currentStepIndex--;
+            } else if (currentSlideIndex > 0) {
+                // Retroceder a la slide anterior
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+                
+                // Si volvemos hacia atrás, queremos que todos los pasos de la slide anterior estén visibles
+                currentSteps = Array.from(slides[currentSlideIndex].querySelectorAll('.step-item'));
+                currentSteps.forEach(s => s.classList.add('revealed'));
+                currentStepIndex = currentSteps.length - 1;
+            }
+        }
+    </script>
+</body>
+</html>
