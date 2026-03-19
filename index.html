@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Delta Ecosystem | Escalá tu Agencia Tech a $10k/mes</title>
+    <title>Delta | Escalá tu Agencia Tech a $10k/mes</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,12 +11,12 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Google Fonts: Inter para lectura, Fira Code para el toque Tech/Dev -->
+    <!-- Google Fonts: Inter & Fira Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Config Ultra-Personalizada -->
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -28,7 +28,6 @@
                             500: '#FF5722',
                             600: '#E64A19',
                             900: '#1a0500',
-                            glow: 'rgba(255, 87, 34, 0.5)'
                         },
                         dark: {
                             950: '#030303',
@@ -43,19 +42,19 @@
                         sans: ['Inter', 'sans-serif'],
                         mono: ['Fira Code', 'monospace'],
                     },
-                    backgroundImage: {
-                        'grid-pattern': "url('data:image/svg+xml,%3Csvg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M0 0h40v40H0V0zm1 1h38v38H1V1z\" fill=\"%23ffffff\" fill-opacity=\"0.03\" fill-rule=\"evenodd\"/%3E%3C/svg%3E')",
-                        'radial-gradient': 'radial-gradient(circle at top right, rgba(255,87,34,0.15), transparent 40%), radial-gradient(circle at bottom left, rgba(255,87,34,0.1), transparent 40%)'
-                    },
                     animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                        'pan-grid': 'panGrid 40s linear infinite',
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-20px) scale(1.05)' },
+                        },
+                        panGrid: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(40px)' }, /* Mismo alto que el size de la grilla */
                         }
                     }
                 }
@@ -64,107 +63,135 @@
     </script>
 
     <style>
-        /* Core Styles & Reset */
-        :root {
-            --delta-color: #FF5722;
-        }
+        /* Variables y Core */
+        :root { --bg-color: #030303; }
         body { 
-            background-color: #030303; 
+            background-color: var(--bg-color); 
             color: #e5e5e5;
             overflow-x: hidden;
         }
         
-        /* Custom Scrollbar for Engineers */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #030303; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
+        /* Logo Delta 100% CSS de Juanma */
+        .delta-logo {
+            width: 0; height: 0; 
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 22px solid #FF5722;
+            position: relative;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+        .delta-logo::after {
+            content: ''; position: absolute;
+            top: 6px; left: -7px;
+            width: 0; height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 13px solid var(--bg-color); /* Match background */
+            transition: all 0.3s ease;
+        }
+        .group:hover .delta-logo { transform: scale(1) translateY(-2px); filter: drop-shadow(0 0 10px rgba(255,87,34,0.5)); }
+
+        /* Fondo Animado Sutil (La Matrix) */
+        .animated-bg-container {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            z-index: 0; pointer-events: none;
+            perspective: 1000px;
+        }
+        .grid-pattern {
+            position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: rotateX(60deg) translateY(0);
+            transform-origin: top center;
+            animation: panGrid 20s linear infinite;
+            mask-image: linear-gradient(to bottom, transparent 10%, black 50%, transparent 90%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 10%, black 50%, transparent 90%);
+        }
+
+        /* Scrollbar Premium */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #FF5722; }
 
-        /* Glassmorphism Utilities */
+        /* Efectos Glass y Componentes */
         .glass-panel {
-            background: rgba(17, 17, 17, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(3, 3, 3, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .glass-card {
-            background: linear-gradient(145deg, rgba(21,21,21,1) 0%, rgba(17,17,17,1) 100%);
-            border: 1px solid #2a2a2a;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(180deg, rgba(20,20,20,1) 0%, rgba(10,10,10,1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
-        
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,87,34,0.3), transparent);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
         .glass-card:hover {
-            border-color: rgba(255, 87, 34, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px -10px rgba(255, 87, 34, 0.2);
+            border-color: rgba(255, 87, 34, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -20px rgba(255, 87, 34, 0.15);
         }
+        .glass-card:hover::before { opacity: 1; }
 
-        /* Routing System Styles */
-        .router-view {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-            transform: translateY(20px);
-        }
-        .router-view.active-view {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Intersection Observer Animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Router & Intersección */
+        .router-view { display: none; opacity: 0; transform: translateY(15px); transition: all 0.5s ease; }
+        .router-view.active-view { display: block; opacity: 1; transform: translateY(0); }
         
-        /* Tech specific styling */
-        .code-block {
-            background: #080808;
-            border-left: 2px solid var(--delta-color);
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Glitch Effect para Títulos */
-        .glitch-hover:hover {
-            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: var(--delta-color);
+        /* Detalles Tech */
+        .code-line::before {
+            content: '>'; color: #FF5722; margin-right: 8px; font-weight: bold;
         }
-
-        /* Overlay para la vista de entregables profunda */
-        #deliverable-modal {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            clip-path: circle(0% at 50% 50%);
+        .glitch-text { position: relative; }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); opacity: 0;
         }
-        #deliverable-modal.modal-open {
-            clip-path: circle(150% at 50% 50%);
+        .group:hover .glitch-text::before {
+            left: 2px; text-shadow: -1px 0 red; opacity: 0.7; animation: glitch-anim-1 0.2s linear infinite reverse;
         }
+        .group:hover .glitch-text::after {
+            left: -2px; text-shadow: -1px 0 blue; opacity: 0.7; animation: glitch-anim-2 0.3s linear infinite;
+        }
+        @keyframes glitch-anim-1 { 0% { clip-path: inset(20% 0 80% 0); } 100% { clip-path: inset(80% 0 20% 0); } }
+        @keyframes glitch-anim-2 { 0% { clip-path: inset(50% 0 30% 0); } 100% { clip-path: inset(10% 0 60% 0); } }
     </style>
 </head>
-<body class="font-sans antialiased min-h-screen relative selection:bg-delta-500 selection:text-white bg-radial-gradient">
+<body class="font-sans antialiased min-h-screen relative selection:bg-delta-500 selection:text-white">
 
-    <!-- Grid Background -->
-    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0 mix-blend-overlay opacity-30"></div>
+    <!-- Fondo Animado Sutil (Grid + Orbes) -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="animated-bg-container">
+            <div class="grid-pattern"></div>
+        </div>
+        <!-- Orbes de luz sutiles -->
+        <div class="absolute top-[10%] left-[20%] w-96 h-96 bg-delta-500/10 rounded-full blur-[120px] animate-float"></div>
+        <div class="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-delta-600/5 rounded-full blur-[150px] animate-pulse-slow"></div>
+    </div>
 
-    <!-- Navigation Header -->
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b-0 border-white/5 transition-all duration-300" id="navbar">
+    <!-- Navegación -->
+    <nav class="fixed top-0 w-full z-50 glass-panel transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <!-- Brand -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
-                <div class="relative flex items-center justify-center w-10 h-10 bg-dark-800 rounded-lg border border-white/10 group-hover:border-delta-500/50 transition-colors overflow-hidden">
-                    <div class="absolute inset-0 bg-delta-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <i data-lucide="triangle" class="text-delta-500 fill-delta-500 w-5 h-5 group-hover:animate-pulse"></i>
+            
+            <!-- Branding Logo CSS Puro -->
+            <div class="flex items-center gap-4 cursor-pointer group" onclick="navigate('home')">
+                <div class="w-10 h-10 flex items-center justify-center bg-dark-900 border border-white/5 rounded-lg">
+                    <div class="delta-logo"></div>
                 </div>
-                <div class="flex flex-col">
-                    <span class="font-black tracking-widest text-lg leading-none uppercase">Delta</span>
-                    <span class="font-mono text-[10px] text-delta-500 leading-none mt-1">v2.0.Ecosystem</span>
-                </div>
+                <span class="font-black tracking-widest text-xl uppercase tracking-[0.2em] text-white">Delta</span>
             </div>
 
             <!-- Desktop Menu -->
@@ -172,227 +199,141 @@
                 <button onclick="navigate('home')" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Framework</button>
                 <button onclick="navigate('portfolio')" class="text-sm font-semibold text-gray-400 hover:text-white transition-colors">Casos de Éxito</button>
                 <button onclick="navigate('ecosystem')" class="text-sm font-semibold text-gray-400 hover:text-white flex items-center gap-2 transition-colors">
-                    <i data-lucide="layers" class="w-4 h-4 text-delta-500"></i> Entregables
+                    <i data-lucide="folder-open" class="w-4 h-4 text-delta-500"></i> Entregables
                 </button>
-                <button onclick="navigate('checkout')" class="group relative px-6 py-2.5 font-bold text-white rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all overflow-hidden">
-                    <div class="absolute inset-0 w-0 bg-delta-500 transition-all duration-300 ease-out group-hover:w-full"></div>
-                    <span class="relative flex items-center gap-2">
-                        Aplicar <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                <button onclick="navigate('checkout')" class="relative px-6 py-2.5 font-bold text-white rounded-lg bg-white/5 border border-white/10 hover:border-delta-500/50 hover:bg-delta-500/10 transition-all overflow-hidden group">
+                    <span class="relative flex items-center gap-2 text-sm uppercase tracking-wider">
+                        Auditoría Gratuita <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                     </span>
                 </button>
             </div>
 
-            <!-- Mobile Toggle -->
-            <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()">
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white p-2 focus:outline-none" onclick="toggleMobileMenu()">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 bg-dark-950/98 z-40 hidden flex-col justify-center items-center gap-8 glass-panel">
+    <!-- Menú Móvil -->
+    <div id="mobile-menu" class="fixed inset-0 bg-dark-950/98 z-40 hidden flex-col justify-center items-center gap-8 backdrop-blur-xl">
         <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-gray-400 hover:text-white">
             <i data-lucide="x" class="w-8 h-8"></i>
         </button>
-        <button onclick="navigate('home'); toggleMobileMenu()" class="text-2xl font-bold font-mono glitch-hover">01. Framework</button>
-        <button onclick="navigate('portfolio'); toggleMobileMenu()" class="text-2xl font-bold font-mono glitch-hover">02. Casos de Éxito</button>
-        <button onclick="navigate('ecosystem'); toggleMobileMenu()" class="text-2xl font-bold font-mono glitch-hover">03. Entregables</button>
-        <button onclick="navigate('checkout'); toggleMobileMenu()" class="mt-8 px-8 py-4 bg-delta-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(255,87,34,0.4)]">
-            Agendar Auditoría
+        <div class="delta-logo transform scale-150 mb-4"></div>
+        <button onclick="navigate('home'); toggleMobileMenu()" class="text-2xl font-bold font-mono text-white hover:text-delta-500 transition-colors">01. Framework</button>
+        <button onclick="navigate('portfolio'); toggleMobileMenu()" class="text-2xl font-bold font-mono text-white hover:text-delta-500 transition-colors">02. Casos de Éxito</button>
+        <button onclick="navigate('ecosystem'); toggleMobileMenu()" class="text-2xl font-bold font-mono text-white hover:text-delta-500 transition-colors">03. Entregables</button>
+        <button onclick="navigate('checkout'); toggleMobileMenu()" class="mt-8 px-8 py-4 bg-delta-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(255,87,34,0.4)] uppercase tracking-wider">
+            Agendar Sesión
         </button>
     </div>
 
-    <!-- MAIN APP CONTAINER -->
+    <!-- MAIN CONTAINER -->
     <main class="relative z-10 pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen flex flex-col">
 
         <!-- ============================================== -->
-        <!-- VIEW: HOME (The Problem & The Pitch)           -->
+        <!-- VIEW: HOME (Landing + Presentación VSL Híbrida)-->
         <!-- ============================================== -->
         <section id="view-home" class="router-view active-view flex-1">
             
             <!-- HERO -->
-            <div class="flex flex-col items-center text-center mt-10 md:mt-20 reveal active">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-delta-900/50 border border-delta-500/30 text-delta-400 font-mono text-xs mb-8">
-                    <span class="w-2 h-2 rounded-full bg-delta-500 animate-pulse"></span>
-                    SISTEMATIZACIÓN DE ADQUISICIÓN B2B
+            <div class="flex flex-col items-center text-center mt-12 md:mt-24 reveal active">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-delta-500/10 border border-delta-500/20 text-delta-400 font-mono text-xs mb-8 uppercase tracking-widest backdrop-blur-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-delta-500 animate-pulse"></span>
+                    Agencia Privada para Tech & DevOps
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6">
-                    Tu código escala.<br>
-                    Tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-delta-400 to-delta-600">facturación</span> no.
+                <h1 class="text-5xl md:text-7xl lg:text-[5rem] font-black tracking-tighter leading-[1.05] mb-6">
+                    Dejá de vender horas.<br>
+                    Sistematizá <span class="text-transparent bg-clip-text bg-gradient-to-r from-delta-400 to-delta-600">tu Adquisición</span> B2B.
                 </h1>
                 
-                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mb-10 font-light">
-                    Ayudamos a Ingenieros, DevOps y SysAdmins a dejar de vender "horas" a $500 y transicionar a ofertas B2B irresistibles de <span class="text-white font-bold">$2000-$5000+</span> mediante embudos orgánicos automatizados.
+                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mb-12 font-light leading-relaxed">
+                    Ayudamos a Ingenieros, SysAdmins y Agencias Tech a transformar servicios generalistas en ofertas B2B irresistibles de <strong class="text-white">$2000+ USD</strong> usando embudos orgánicos automatizados.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                    <button onclick="navigate('vsl')" class="px-8 py-4 bg-delta-500 hover:bg-delta-600 text-white font-bold rounded-xl shadow-[0_0_30px_rgba(255,87,34,0.3)] hover:shadow-[0_0_40px_rgba(255,87,34,0.5)] transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="play-circle" class="w-5 h-5"></i> Ver Masterclass Gratuita
+                    <button onclick="scrollToPresentacion()" class="px-8 py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-all flex items-center justify-center gap-3 group">
+                        <i data-lucide="play-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i> Ver Presentación
                     </button>
-                    <button onclick="navigate('ecosystem')" class="px-8 py-4 bg-dark-800 hover:bg-dark-700 border border-white/10 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 group">
-                        Explorar Entregables <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    <button onclick="navigate('checkout')" class="px-8 py-4 bg-dark-800 hover:bg-dark-700 border border-white/10 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-[0_0_0_0_rgba(255,87,34,0)] hover:shadow-[0_0_30px_rgba(255,87,34,0.2)]">
+                        Quiero mi Auditoría Gratuita
                     </button>
                 </div>
             </div>
 
-            <!-- STATS STRIP -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24 border-y border-white/5 py-8 reveal">
-                <div class="text-center">
-                    <p class="text-4xl font-black text-white mb-1">90%</p>
-                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wider">Menos Operational Drag</p>
-                </div>
-                <div class="text-center border-l border-white/5">
-                    <p class="text-4xl font-black text-white mb-1">24/7</p>
-                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wider">Prospección ManyChat</p>
-                </div>
-                <div class="text-center border-l border-white/5">
-                    <p class="text-4xl font-black text-white mb-1">+$2k</p>
-                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wider">Ticket Promedio Target</p>
-                </div>
-                <div class="text-center border-l border-white/5">
-                    <p class="text-4xl font-black text-delta-500 mb-1">0</p>
-                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wider">Inversión en Ads Requerida</p>
-                </div>
-            </div>
-
-            <!-- THE PROBLEM VS SOLUTION -->
-            <div class="mt-32 reveal">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-4">El "Bug" en tu Modelo de Negocio</h2>
-                    <p class="text-gray-400">Sos un ingeniero brillante operando un sistema de ventas defectuoso.</p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Bad Way -->
-                    <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 blur-3xl rounded-full"></div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="p-2 bg-red-500/20 text-red-500 rounded-lg">
-                                <i data-lucide="terminal" class="w-6 h-6"></i>
-                            </div>
-                            <h3 class="font-bold text-xl font-mono text-red-400">Old_System.exe</h3>
-                        </div>
-                        <ul class="space-y-4 text-gray-400 text-sm">
-                            <li class="flex items-start gap-3"><i data-lucide="x" class="text-red-500 mt-0.5 shrink-0"></i> <span>Mandar 100 DMs en frío por LinkedIn y que te claven el visto.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="x" class="text-red-500 mt-0.5 shrink-0"></i> <span>Vender "horas de desarrollo" compitiendo contra indios a $10/hr.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="x" class="text-red-500 mt-0.5 shrink-0"></i> <span>Llamadas de venta donde terminas dando consultoría gratis.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="x" class="text-red-500 mt-0.5 shrink-0"></i> <span>Caos operativo: no tenés un pipeline predecible de clientes B2B.</span></li>
-                        </ul>
-                    </div>
-
-                    <!-- Delta Way -->
-                    <div class="glass-card p-8 rounded-2xl border-delta-500/30 relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-delta-500/20 blur-3xl rounded-full"></div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="p-2 bg-delta-500/20 text-delta-500 rounded-lg">
-                                <i data-lucide="cpu" class="w-6 h-6"></i>
-                            </div>
-                            <h3 class="font-bold text-xl font-mono text-delta-400">Delta_Framework.sh</h3>
-                        </div>
-                        <ul class="space-y-4 text-gray-300 text-sm">
-                            <li class="flex items-start gap-3"><i data-lucide="check" class="text-delta-500 mt-0.5 shrink-0"></i> <span><strong>Contenido de Nicho:</strong> Videos rompiendo creencias limitantes de CEOs y dueños B2B.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="check" class="text-delta-500 mt-0.5 shrink-0"></i> <span><strong>Inbound Automático:</strong> ManyChat capta la intención (Comenta "CLOUD") y envía VSL.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="check" class="text-delta-500 mt-0.5 shrink-0"></i> <span><strong>Onion Offer:</strong> Transformás tu servicio técnico en un resultado de negocio high-ticket.</span></li>
-                            <li class="flex items-start gap-3"><i data-lucide="check" class="text-delta-500 mt-0.5 shrink-0"></i> <span><strong>Cierre Suave:</strong> El prospecto llega a la llamada educado, adoctrinado y listo para pagar.</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ROADMAP (A to B) -->
-            <div class="mt-32 reveal">
-                <h2 class="text-3xl font-bold mb-12 text-center">El Roadmap de Implementación</h2>
-                <div class="relative max-w-4xl mx-auto">
-                    <!-- Línea conectora -->
-                    <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-delta-500/0 via-delta-500/50 to-delta-500/0"></div>
-                    
-                    <!-- Steps -->
-                    <div class="space-y-12">
-                        <!-- Paso 1 -->
-                        <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between group">
-                            <div class="md:w-5/12 text-left md:text-right pl-20 md:pl-0 pr-0 md:pr-12 order-2 md:order-1 mt-4 md:mt-0">
-                                <h4 class="text-xl font-bold text-white mb-2">1. Auditoría de Oferta</h4>
-                                <p class="text-gray-400 text-sm">Dejamos de vender "migraciones" y creamos una Grand Slam Offer orientada a resultados empresariales.</p>
-                            </div>
-                            <div class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-dark-900 border-2 border-delta-500 flex items-center justify-center text-xs font-bold text-delta-500 z-10 shadow-[0_0_10px_#FF5722]">1</div>
-                            <div class="md:w-5/12 order-3 md:order-3"></div>
-                        </div>
-                        
-                        <!-- Paso 2 -->
-                        <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between group">
-                            <div class="md:w-5/12 order-2 md:order-1"></div>
-                            <div class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-dark-900 border-2 border-dark-700 group-hover:border-delta-500 transition-colors flex items-center justify-center text-xs font-bold text-gray-500 group-hover:text-delta-500 z-10">2</div>
-                            <div class="md:w-5/12 text-left pl-20 md:pl-12 order-3 md:order-3 mt-4 md:mt-0">
-                                <h4 class="text-xl font-bold text-white mb-2">2. Embudos "Hand Raiser"</h4>
-                                <p class="text-gray-400 text-sm">Grabamos Masterclasses cortas y configuramos flujos de ManyChat para generar intención de compra instantánea.</p>
-                            </div>
-                        </div>
-
-                        <!-- Paso 3 -->
-                        <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between group">
-                            <div class="md:w-5/12 text-left md:text-right pl-20 md:pl-0 pr-0 md:pr-12 order-2 md:order-1 mt-4 md:mt-0">
-                                <h4 class="text-xl font-bold text-white mb-2">3. Sistema de Setter Orgánico</h4>
-                                <p class="text-gray-400 text-sm">Seguimiento implacable a través del DM a quienes consumieron el entregable, agendando citas cualificadas.</p>
-                            </div>
-                            <div class="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-dark-900 border-2 border-dark-700 group-hover:border-delta-500 transition-colors flex items-center justify-center text-xs font-bold text-gray-500 group-hover:text-delta-500 z-10">3</div>
-                            <div class="md:w-5/12 order-3 md:order-3"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-
-        <!-- ============================================== -->
-        <!-- VIEW: VSL (Presentación Profunda)              -->
-        <!-- ============================================== -->
-        <section id="view-vsl" class="router-view flex-1">
-            <div class="max-w-4xl mx-auto">
-                <button onclick="navigate('home')" class="text-gray-400 hover:text-white flex items-center gap-2 mb-8 text-sm font-mono mt-8">
-                    <i data-lucide="arrow-left" class="w-4 h-4"></i> cd ../home
-                </button>
+            <!-- LA PRESENTACIÓN INYECTADA (El script de presentacion.html de Juanma) -->
+            <div id="presentacion-core" class="mt-32 md:mt-48 max-w-4xl mx-auto">
                 
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-black mb-4">El Sistema Exacto para Escalar a $10k/mes</h2>
-                    <p class="text-gray-400">Sin agencias de marketing, sin webinars de 2 horas. Directo al grano.</p>
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-sm font-mono text-delta-500 tracking-widest uppercase mb-4">El Manifiesto Delta</h2>
+                    <h3 class="text-3xl md:text-5xl font-bold mb-6">Por qué tu modelo de agencia está roto.</h3>
+                    <p class="text-gray-400 text-lg">Si te preguntás "Por qué no me llega gente que me pueda pagar", leé esto.</p>
                 </div>
 
-                <!-- Fake Video Player (High End) -->
-                <div class="relative w-full aspect-video bg-dark-950 rounded-2xl border border-white/10 overflow-hidden shadow-2xl group cursor-pointer">
-                    <!-- Decorative UI -->
-                    <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-delta-500 to-transparent opacity-50"></div>
-                    <div class="absolute top-4 left-4 flex gap-2 z-20">
-                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                <!-- Fase 1: El Problema -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl mb-8 reveal group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center text-gray-400 font-mono text-xl group-hover:text-delta-500 group-hover:border-delta-500/50 transition-colors">01</div>
+                        <h4 class="text-2xl font-bold glitch-text" data-text="El Nicho Generalista">El Nicho Generalista</h4>
                     </div>
-                    
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80" alt="VSL" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity">
-                    
-                    <!-- Play Button Animation -->
-                    <div class="absolute inset-0 flex items-center justify-center z-20 bg-dark-950/40 backdrop-blur-sm group-hover:backdrop-blur-0 transition-all duration-500">
-                        <div class="relative w-20 h-20 rounded-full flex items-center justify-center bg-delta-500/20 border border-delta-500 overflow-hidden transform group-hover:scale-110 transition-transform duration-300">
-                            <div class="absolute inset-0 bg-delta-500 animate-ping opacity-20"></div>
-                            <i data-lucide="play" class="w-8 h-8 text-white ml-1 fill-white"></i>
+                    <div class="prose prose-invert max-w-none text-gray-400">
+                        <p class="mb-4">Tu problema no es que no sabés codear o configurar servidores. Tu problema es que <strong>sos uno más del montón</strong>. Estás intentando ayudar a coaches, a tiendas chicas, a todo el mundo. Y el que le habla a todos, no le vende a nadie.</p>
+                        <p class="mb-4">¿El resultado? Mandás 50 DMs por día, nadie te contesta, y los pocos que lo hacen se espantan cuando les decís que tu servicio (una landing o un setup) cuesta $200 USD. Competís por precio contra todo el mundo.</p>
+                        <div class="bg-dark-900 border-l-4 border-red-500 p-4 rounded-r-lg font-mono text-sm text-red-400 mt-6">
+                            <p class="code-line">Error FATAL: Vender "Entregables Técnicos" a gente que no entiende su valor comercial.</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Progress bar -->
-                    <div class="absolute bottom-0 w-full h-1 bg-dark-800 z-20">
-                        <div class="h-full bg-delta-500 w-1/3"></div>
+                <!-- Fase 2: La Solución (La Oferta Cebolla) -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl mb-8 reveal group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-dark-800 border border-white/10 flex items-center justify-center text-gray-400 font-mono text-xl group-hover:text-delta-500 group-hover:border-delta-500/50 transition-colors">02</div>
+                        <h4 class="text-2xl font-bold glitch-text" data-text="La Onion Offer B2B">La Onion Offer B2B</h4>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-gray-400">
+                        <p class="mb-4">Para cobrar de <strong>$1000 a $3000 USD</strong>, tenemos que transformar lo que hacés. No vendés "Migración de servidores Cloud AWS". Vendés: <em>"Infraestructura anti-caídas para E-commerces que facturan +$50k en Black Friday"</em>.</p>
+                        <p class="mb-4">Creamos una oferta en capas (Onion Offer):</p>
+                        <ul class="list-none space-y-2 mt-4 text-sm font-mono">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="text-delta-500 w-4 h-4"></i> Capa Externa: Tu contenido orgánico gratuito.</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="text-delta-500 w-4 h-4"></i> Capa Media (BizOp): Comunidades y Entregables de bajo ticket.</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="text-delta-500 w-4 h-4"></i> Capa Central: Done-For-You (DFY) a +$3000 USD donde resolvés el problema de raíz.</li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="mt-12 bg-dark-800/50 border border-white/5 rounded-2xl p-8 text-center max-w-2xl mx-auto">
-                    <h3 class="text-xl font-bold mb-4">¿Te hace sentido lo que viste?</h3>
-                    <p class="text-gray-400 text-sm mb-6">Si estás listo para dejar de iterar solo y querés que implementemos este ecosistema en tu negocio (Oferta + Contenido + Setter), agendemos una auditoría gratuita.</p>
-                    <button onclick="navigate('checkout')" class="w-full bg-delta-500 hover:bg-delta-600 text-white font-bold py-4 rounded-xl transition-colors">
-                        Reclamar mi Auditoría de 15 Minutos
+                <!-- Fase 3: Adquisición Orgánica (El Motor) -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl mb-16 reveal group border-delta-500/30">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-delta-500/10 blur-[80px] rounded-full"></div>
+                    <div class="flex items-center gap-4 mb-6 relative">
+                        <div class="w-12 h-12 rounded-full bg-delta-500/20 border border-delta-500 flex items-center justify-center text-delta-500 font-mono text-xl shadow-[0_0_15px_rgba(255,87,34,0.4)]">03</div>
+                        <h4 class="text-2xl font-bold text-white">El Motor Inbound Delta</h4>
+                    </div>
+                    <div class="prose prose-invert max-w-none text-gray-300 relative">
+                        <p class="mb-4">Como tenés <em>Operational Drag</em>, no tenés tiempo para prospectar 8 horas al día. Así que lo automatizamos:</p>
+                        <div class="bg-dark-950 p-6 rounded-xl border border-white/5 font-mono text-xs sm:text-sm mt-6">
+                            <p class="text-gray-500 mb-2">/* El Flujo Exacto */</p>
+                            <p class="mb-2"><span class="text-blue-400">1. IG Content:</span> Video rompiendo creencias (ej: "Por qué tu web se congela en Black Friday").</p>
+                            <p class="mb-2"><span class="text-delta-400">2. CTA:</span> "Comentá CLOUD y te paso el sistema".</p>
+                            <p class="mb-2"><span class="text-green-400">3. ManyChat:</span> Se encarga de entregar el recurso automáticamente por DM.</p>
+                            <p class="mb-2"><span class="text-purple-400">4. Hand Raiser:</span> El lead revela su problema respondiendo al bot.</p>
+                            <p class="mb-0"><span class="text-red-400">5. Cierre:</span> Llamada agendada. Lead caliente. Cerrás a $2000 sin objeciones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón CTA Post-Presentación -->
+                <div class="text-center reveal">
+                    <button onclick="navigate('checkout')" class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-delta-500 rounded-xl hover:bg-delta-600 shadow-[0_0_30px_rgba(255,87,34,0.3)] hover:shadow-[0_0_50px_rgba(255,87,34,0.5)] focus:outline-none overflow-hidden">
+                        <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                        <span class="relative flex items-center gap-2">Construyamos tu Agencia <i data-lucide="arrow-right" class="w-5 h-5"></i></span>
                     </button>
+                    <p class="mt-4 text-xs font-mono text-gray-500 uppercase tracking-widest">Plazas limitadas. 1 a 1 con Juanma.</p>
                 </div>
             </div>
+
         </section>
 
 
@@ -401,17 +342,17 @@
         <!-- ============================================== -->
         <section id="view-ecosystem" class="router-view flex-1 relative">
             
-            <div class="mb-12 mt-8 text-center reveal">
-                <div class="inline-block p-2 bg-white/5 rounded-xl border border-white/10 mb-4">
-                    <i data-lucide="database" class="w-6 h-6 text-delta-500"></i>
+            <div class="mb-16 mt-12 text-center reveal">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-dark-800 border border-white/10 mb-6 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+                    <i data-lucide="database" class="w-8 h-8 text-delta-500"></i>
                 </div>
-                <h2 class="text-4xl font-black mb-4">El Arsenal de Entregables</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Seleccioná un recurso. Estos son los mismos sistemas que usamos internamente para generar Inbound B2B de alta calidad.</p>
+                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">Arsenal de <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">Entregables</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Los sistemas, guiones y estructuras exactas que usamos para escalar agencias de infraestructura y código.</p>
             </div>
 
-            <!-- Dynamic Grid to be populated by JS -->
+            <!-- Dynamic Grid -->
             <div id="deliverables-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
-                <!-- Se inyectan las cards vía JS para simular lógica de aplicación -->
+                <!-- Se inyectan las cards vía JS -->
             </div>
 
         </section>
@@ -421,43 +362,50 @@
         <!-- VIEW: PORTFOLIO (Casos de Éxito)               -->
         <!-- ============================================== -->
         <section id="view-portfolio" class="router-view flex-1">
-            <div class="mt-8 text-center mb-16 reveal">
-                <h2 class="text-4xl font-black mb-4">La Data No Miente</h2>
-                <p class="text-gray-400">Historias de ingenieros que dejaron de cobrar barato.</p>
+            <div class="mt-12 text-center mb-16 reveal">
+                <h2 class="text-sm font-mono text-delta-500 tracking-widest uppercase mb-4">Prueba Social</h2>
+                <h3 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">La Data No Miente</h3>
+                <p class="text-gray-400 text-lg">Historias de ingenieros que dejaron de cobrar barato.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 reveal">
                 <!-- Caso 1 -->
-                <div class="glass-card p-8 rounded-2xl relative">
-                    <div class="flex justify-between items-start mb-6">
+                <div class="glass-card p-8 md:p-10 rounded-3xl relative group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-[50px] rounded-full group-hover:bg-green-500/20 transition-colors"></div>
+                    <div class="flex justify-between items-start mb-8 relative z-10">
                         <div>
-                            <h3 class="text-2xl font-bold text-white mb-1">AWS Migration Agency</h3>
-                            <p class="text-delta-500 font-mono text-sm">De $800/mes a $7.5k/mes</p>
+                            <h3 class="text-2xl font-bold text-white mb-2">AWS Migration Agency</h3>
+                            <div class="inline-flex px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-md">
+                                <p class="text-green-400 font-mono text-xs font-bold">MRR: $800 ➔ $7,500</p>
+                            </div>
                         </div>
                         <i data-lucide="trending-up" class="w-8 h-8 text-green-400"></i>
                     </div>
-                    <p class="text-gray-400 text-sm mb-6">Vendían servidores. Empezamos a vender "Disponibilidad 99.9% para E-commerce en Black Friday". El valor percibido explotó.</p>
-                    <div class="code-block p-4 rounded-lg font-mono text-xs text-gray-300">
-                        > old_ticket: $800 (one_off)<br>
-                        > new_ticket: $2500 (setup) + $500/mo retainer<br>
-                        > acquisition: Inbound IG -> Manychat -> VSL
+                    <p class="text-gray-400 text-sm mb-8 relative z-10 leading-relaxed">Dejaron de vender "servidores". Empezamos a vender "Disponibilidad 99.9% para E-commerce en Black Friday". El valor percibido explotó y el nicho se achicó a clientes con plata.</p>
+                    <div class="bg-dark-950 p-5 rounded-xl border border-white/5 font-mono text-xs text-gray-400 relative z-10">
+                        <p class="code-line mb-1">Old_Ticket: $800 (One-off)</p>
+                        <p class="code-line mb-1 text-white">New_Ticket: $2500 (Setup) + $500/mo Retainer</p>
+                        <p class="code-line text-delta-400">Acquisition: Inbound IG -> Manychat -> Cierre</p>
                     </div>
                 </div>
 
                 <!-- Caso 2 -->
-                <div class="glass-card p-8 rounded-2xl relative">
-                    <div class="flex justify-between items-start mb-6">
+                <div class="glass-card p-8 md:p-10 rounded-3xl relative group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-delta-500/10 blur-[50px] rounded-full group-hover:bg-delta-500/20 transition-colors"></div>
+                    <div class="flex justify-between items-start mb-8 relative z-10">
                         <div>
-                            <h3 class="text-2xl font-bold text-white mb-1">DevOps B2B Consultor</h3>
-                            <p class="text-delta-500 font-mono text-sm">De 0 a 3 Clientes High Ticket en 30 días</p>
+                            <h3 class="text-2xl font-bold text-white mb-2">DevOps B2B Consultor</h3>
+                            <div class="inline-flex px-3 py-1 bg-delta-500/10 border border-delta-500/20 rounded-md">
+                                <p class="text-delta-400 font-mono text-xs font-bold">3 High Ticket en 30 días</p>
+                            </div>
                         </div>
-                        <i data-lucide="zap" class="w-8 h-8 text-yellow-400"></i>
+                        <i data-lucide="zap" class="w-8 h-8 text-delta-500"></i>
                     </div>
-                    <p class="text-gray-400 text-sm mb-6">Agregamos un setter orgánico a su perfil de Instagram. Solo tuvo que grabar 4 videos rompiendo creencias de su nicho.</p>
-                    <div class="code-block p-4 rounded-lg font-mono text-xs text-gray-300">
-                        > leads_generated: 145<br>
-                        > calls_booked: 12<br>
-                        > closed_won: 3 ($3000 USD ea)
+                    <p class="text-gray-400 text-sm mb-8 relative z-10 leading-relaxed">Agregamos secuencias de historias lógicas (Why Now?, Casos de éxito, CTA por entregable) y un setter orgánico. Solo tuvo que grabar 4 videos rompiendo creencias.</p>
+                    <div class="bg-dark-950 p-5 rounded-xl border border-white/5 font-mono text-xs text-gray-400 relative z-10">
+                        <p class="code-line mb-1">Leads_Generados: 145</p>
+                        <p class="code-line mb-1 text-white">Llamadas_Agendadas: 12</p>
+                        <p class="code-line text-green-400">Cerrados: 3 ($3000 USD c/u)</p>
                     </div>
                 </div>
             </div>
@@ -468,26 +416,28 @@
         <!-- VIEW: CHECKOUT / AGENDA (El CTA Final)         -->
         <!-- ============================================== -->
         <section id="view-checkout" class="router-view flex-1">
-            <div class="max-w-3xl mx-auto mt-8 relative">
+            <div class="max-w-4xl mx-auto mt-12 relative reveal">
                 <!-- Decorative background glow -->
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-radial-gradient -z-10"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-delta-500/10 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
                 
-                <div class="glass-panel p-8 md:p-12 rounded-3xl border border-delta-500/20 text-center relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-delta-400 to-delta-600"></div>
+                <div class="glass-panel p-8 md:p-14 rounded-[2rem] border border-delta-500/20 text-center relative overflow-hidden shadow-2xl">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-delta-500 to-transparent"></div>
                     
-                    <h2 class="text-3xl md:text-5xl font-black mb-6">Tu Agencia Delta Empieza Acá</h2>
-                    <p class="text-gray-400 mb-8 max-w-xl mx-auto">Seleccioná un horario. Vamos a analizar tu modelo actual, encontrar los cuellos de botella en tu adquisición y armarte el roadmap. Si no te sirve, te devolvemos tus 15 minutos.</p>
+                    <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">Tu Imperio Empieza Acá</h2>
+                    <p class="text-gray-400 mb-10 max-w-xl mx-auto text-lg">Seleccioná un horario. Analizamos tu oferta actual, detectamos cuellos de botella y armamos tu Roadmap B2B gratis. Sin presión. Solo sistemas.</p>
                     
-                    <!-- Fake Calendly Box -->
-                    <div class="bg-dark-950/80 border border-white/5 rounded-xl p-8 mb-8">
-                        <i data-lucide="calendar" class="w-12 h-12 text-gray-500 mx-auto mb-4 opacity-50"></i>
+                    <!-- Fake Calendly Box Premium -->
+                    <div class="bg-dark-950/80 border border-white/5 rounded-2xl p-10 mb-8 flex flex-col items-center justify-center min-h-[300px] group cursor-not-allowed">
+                        <div class="w-16 h-16 rounded-full bg-dark-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="calendar" class="w-8 h-8 text-gray-500"></i>
+                        </div>
                         <h3 class="text-xl font-bold mb-2">Embed de Calendly / Cal.com</h3>
-                        <p class="text-sm text-gray-500 font-mono">[Acá va el iframe de tu calendario]</p>
+                        <p class="text-sm text-gray-600 font-mono">[Acá insertamos tu iframe de reservas]</p>
                     </div>
 
-                    <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-green-500"></i>
-                        <span>Llamada 100% libre de presión. Cero tácticas de venta baratas.</span>
+                    <div class="flex items-center justify-center gap-3 text-sm text-gray-400 bg-dark-900/50 inline-flex px-6 py-3 rounded-full border border-white/5">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-delta-500"></i>
+                        <span>100% Confidencial. 100% Enfocado en Ingeniería.</span>
                     </div>
                 </div>
             </div>
@@ -496,189 +446,208 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-white/5 bg-dark-950 pt-16 pb-8 z-10 relative">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8 mb-12">
+    <footer class="border-t border-white/5 bg-dark-950 pt-16 pb-8 z-10 relative mt-auto">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-16">
             <div class="col-span-2">
-                <div class="flex items-center gap-2 mb-4">
-                    <i data-lucide="triangle" class="text-delta-500 fill-delta-500 w-5 h-5"></i>
-                    <span class="font-black tracking-widest text-lg uppercase">Delta</span>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 flex items-center justify-center bg-dark-900 border border-white/5 rounded-lg">
+                        <div class="delta-logo" style="transform: scale(0.6)"></div>
+                    </div>
+                    <span class="font-black tracking-widest text-lg uppercase text-white">Delta</span>
                 </div>
-                <p class="text-gray-500 text-sm max-w-sm">Escalando ingenieros y SysAdmins a $10k/mes mediante sistemas de adquisición orgánicos, lógicos y predecibles.</p>
+                <p class="text-gray-500 text-sm max-w-sm leading-relaxed">Sistematizando la adquisición de clientes para ingenieros, desarrolladores y SysAdmins. Construí un negocio que escale, no un trabajo que te ahogue.</p>
             </div>
             <div>
-                <h4 class="font-bold text-white mb-4">Ecosistema</h4>
-                <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" onclick="navigate('vsl')" class="hover:text-delta-500 transition-colors">Masterclass</a></li>
-                    <li><a href="#" onclick="navigate('ecosystem')" class="hover:text-delta-500 transition-colors">Entregables</a></li>
-                    <li><a href="#" onclick="navigate('portfolio')" class="hover:text-delta-500 transition-colors">Casos de Éxito</a></li>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-xs">Ecosistema</h4>
+                <ul class="space-y-3 text-sm text-gray-500 font-mono">
+                    <li><a href="#" onclick="navigate('home')" class="hover:text-delta-500 transition-colors">> Framework</a></li>
+                    <li><a href="#" onclick="navigate('ecosystem')" class="hover:text-delta-500 transition-colors">> Entregables</a></li>
+                    <li><a href="#" onclick="navigate('portfolio')" class="hover:text-delta-500 transition-colors">> Casos de Éxito</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-white mb-4">Legal</h4>
-                <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" class="hover:text-white transition-colors">Términos</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Privacidad</a></li>
+                <h4 class="font-bold text-white mb-6 uppercase tracking-wider text-xs">Contacto</h4>
+                <ul class="space-y-3 text-sm text-gray-500 font-mono">
+                    <li><a href="#" class="hover:text-white transition-colors">> Instagram</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">> YouTube</a></li>
                 </ul>
             </div>
         </div>
-        <div class="text-center text-gray-600 text-xs font-mono">
-            &copy; 2026 Agencia Delta. Compilado con mentalidad High Ticket.
+        <div class="text-center text-gray-600 text-xs font-mono border-t border-white/5 pt-8">
+            &copy; 2026 Agencia Delta. Mentoría por Juanma. Sin excusas.
         </div>
     </footer>
 
     <!-- ============================================== -->
-    <!-- OVERLAY MODAL PARA ENTREGABLES (La "Animación" que pediste) -->
+    <!-- MODAL ENTREGABLES INTERACTIVO                  -->
     <!-- ============================================== -->
-    <div id="deliverable-modal" class="fixed inset-0 bg-dark-950 z-[100] overflow-y-auto hidden flex flex-col pointer-events-none">
-        <!-- Close Button -->
-        <div class="sticky top-0 w-full p-6 flex justify-end z-[110] glass-panel border-b-0 border-white/5">
-            <button onclick="closeDeliverable()" class="flex items-center gap-2 text-gray-400 hover:text-white px-4 py-2 bg-white/5 rounded-full transition-colors pointer-events-auto">
-                <i data-lucide="x" class="w-5 h-5"></i> Cerrar Entregable
+    <div id="deliverable-modal" class="fixed inset-0 bg-dark-950/95 backdrop-blur-md z-[100] overflow-y-auto hidden flex flex-col pointer-events-none transition-opacity duration-300 opacity-0">
+        <div class="sticky top-0 w-full p-6 flex justify-end z-[110]">
+            <button onclick="closeDeliverable()" class="flex items-center gap-2 text-gray-400 hover:text-white px-6 py-3 bg-dark-900 border border-white/10 rounded-full transition-all hover:bg-dark-800 hover:scale-105 pointer-events-auto shadow-xl">
+                Cerrar <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
         
-        <!-- Modal Content Container -->
-        <div class="max-w-4xl mx-auto w-full p-6 md:p-12 pb-32" id="modal-content">
+        <div class="max-w-4xl mx-auto w-full p-6 md:p-12 pb-32 transform transition-transform duration-500 translate-y-10" id="modal-content">
             <!-- Contenido inyectado por JS -->
         </div>
     </div>
 
 
     <!-- ============================================== -->
-    <!-- SYSTEM SCRIPTS (JS ARCHITECTURE)               -->
+    <!-- SCRIPTS CORE                                   -->
     <!-- ============================================== -->
     <script>
-        // 1. Inicializar iconos
         lucide.createIcons();
 
-        // 2. Base de Datos Mock de Entregables (Ecosistema)
+        // Scroll al "Manifiesto" (La Presentación)
+        function scrollToPresentacion() {
+            const element = document.getElementById('presentacion-core');
+            const navHeight = document.getElementById('navbar').offsetHeight;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - navHeight - 20;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+
+        // Base de Datos Entregables (Mock)
         const deliverables = [
             {
                 id: 'masterclass-oferta',
                 type: 'VIDEO MASTERCLASS',
                 title: 'La Anatomía de una Onion Offer B2B',
-                desc: 'Cómo empaquetar tus conocimientos técnicos en una oferta que los CEOs no puedan rechazar. Chau a cobrar por hora.',
+                desc: 'Cómo empaquetar tus conocimientos técnicos en una oferta que los CEOs no puedan rechazar.',
                 icon: 'youtube',
                 color: 'text-red-500',
+                borderHover: 'group-hover:border-red-500/30',
                 content: `
-                    <div class="mb-8">
-                        <span class="text-red-500 font-mono text-xs font-bold mb-2 block">SISTEMA CERRADO</span>
-                        <h2 class="text-4xl font-black mb-4">La Anatomía de una Onion Offer B2B</h2>
-                        <p class="text-gray-400">Implementación teórica y práctica.</p>
+                    <div class="mb-10 text-center">
+                        <span class="inline-block px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-500 font-mono text-xs font-bold rounded-full mb-6">CLASE MAGISTRAL</span>
+                        <h2 class="text-4xl md:text-5xl font-black mb-6">La Onion Offer B2B</h2>
+                        <p class="text-gray-400 text-lg">Implementación teórica para ingenieros de sistemas.</p>
                     </div>
-                    <div class="aspect-video bg-dark-800 rounded-2xl flex items-center justify-center border border-white/10 mb-8 relative overflow-hidden group cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay transition-transform duration-700 group-hover:scale-105">
-                        <div class="w-20 h-20 rounded-full bg-red-600 flex items-center justify-center z-10 group-hover:bg-red-500 transition-colors shadow-[0_0_30px_rgba(220,38,38,0.5)]">
-                            <i data-lucide="play" class="w-8 h-8 text-white ml-1 fill-white"></i>
+                    <div class="aspect-video bg-dark-900 rounded-3xl flex items-center justify-center border border-white/10 mb-12 relative overflow-hidden group cursor-pointer shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay transition-transform duration-700 group-hover:scale-105">
+                        <div class="w-24 h-24 rounded-full bg-red-600 flex items-center justify-center z-10 group-hover:bg-red-500 transition-colors shadow-[0_0_40px_rgba(220,38,38,0.6)] group-hover:scale-110 duration-300">
+                            <i data-lucide="play" class="w-10 h-10 text-white ml-2 fill-white"></i>
                         </div>
                     </div>
-                    <div class="prose prose-invert prose-p:text-gray-400">
-                        <h3>¿Por qué los ingenieros cobran mal?</h3>
-                        <p>Porque venden entregables técnicos. El CEO de un eCommerce no quiere "migrar a AWS". Quiere "Que la página no se caiga cuando gaste $10k en ads este Black Friday". Cambiá el ángulo, multiplicá el precio por 5.</p>
-                        <button onclick="navigate('checkout'); closeDeliverable()" class="mt-8 px-6 py-3 bg-delta-500 text-white font-bold rounded-lg hover:bg-delta-600 transition-colors">Implementar esto en mi agencia</button>
+                    <div class="bg-dark-900 p-8 rounded-2xl border border-white/5">
+                        <h3 class="text-xl font-bold mb-4">Puntos Clave del Video:</h3>
+                        <ul class="space-y-4 text-gray-400">
+                            <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-delta-500 w-5 h-5 mt-0.5 shrink-0"></i> No vendemos código, vendemos resultados de negocio (tiempo y dinero salvado).</li>
+                            <li class="flex items-start gap-3"><i data-lucide="check-circle" class="text-delta-500 w-5 h-5 mt-0.5 shrink-0"></i> Estructura de Capas: Gratis (Contenido), Low Ticket (BizOp), High Ticket (DFY).</li>
+                        </ul>
+                        <div class="mt-8 text-center">
+                            <button onclick="navigate('checkout'); closeDeliverable()" class="px-8 py-4 bg-delta-500 text-white font-bold rounded-xl hover:bg-delta-600 transition-colors">Implementar en mi Negocio</button>
+                        </div>
                     </div>
                 `
             },
             {
                 id: 'guion-manychat',
-                type: 'TEMPLATE MUCHACHO',
+                type: 'TEMPLATE AUTOMATIZACIÓN',
                 title: 'Flujo ManyChat "Hand Raiser"',
-                desc: 'El mapa de JSON exacto para automatizar Instagram. Comentan "CLOUD", reciben valor, filtran su problema, agendan.',
+                desc: 'JSON exacto para automatizar Instagram. Comentan la palabra clave, filtran su problema y agendan.',
                 icon: 'bot',
                 color: 'text-blue-500',
+                borderHover: 'group-hover:border-blue-500/30',
                 content: `
-                    <div class="mb-8">
-                        <span class="text-blue-500 font-mono text-xs font-bold mb-2 block">TEMPLATE DESCARGABLE</span>
-                        <h2 class="text-4xl font-black mb-4">Flujo ManyChat "Hand Raiser"</h2>
+                    <div class="mb-10 text-center">
+                        <span class="inline-block px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-500 font-mono text-xs font-bold rounded-full mb-6">SISTEMA PLUG & PLAY</span>
+                        <h2 class="text-4xl md:text-5xl font-black mb-6">El Inbound Bot B2B</h2>
                     </div>
-                    <div class="p-8 bg-dark-900 border border-blue-500/20 rounded-2xl mb-8 font-mono text-sm text-gray-300">
-                        <p class="text-blue-400 mb-4">// Estructura Lógica</p>
-                        <p>1. User -> Comenta Reel ("CLOUD")</p>
-                        <p>2. Bot -> DM: "Acá tenés el recurso. Por cierto, vi que sos Dev, ¿estás vendiendo B2B o a particulares?"</p>
-                        <p>3. User -> Responde</p>
-                        <p>4. Bot -> "Interesante. Pude ayudar a varios con [Problema X]. ¿Te interesa que charlemos 10 min a ver si el framework aplica para tu caso?"</p>
-                        <p>5. User -> Link Calendly.</p>
+                    <div class="p-10 bg-dark-950 border border-blue-500/20 rounded-3xl mb-8 font-mono text-sm sm:text-base text-gray-300 shadow-2xl">
+                        <p class="text-blue-400 mb-6 font-bold">/* Flujo de Adquisición Instagram */</p>
+                        <p class="mb-4 text-gray-500">1. Trigger: User comenta "SISTEMA" en Reel.</p>
+                        <p class="mb-4 pl-4 border-l-2 border-dark-800">2. Bot (DM): "Acá tenés la clase. Vi que sos Dev, ¿vendés a negocios B2B o hacés proyectitos freelance?"</p>
+                        <p class="mb-4 text-gray-500">3. Wait for Reply...</p>
+                        <p class="mb-4 pl-4 border-l-2 border-dark-800">4. Bot: "Tremendo. Si te interesa, pudimos escalar a 3 agencias con el mismo cuello de botella. ¿Te paso el link para charlar 10 min y ver si te sirve el framework?"</p>
+                        <p class="text-green-400 font-bold mt-8">>> Resultado: Llamada Agendada. Friction = 0.</p>
                     </div>
-                    <button class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Descargar JSON</button>
+                    <div class="text-center">
+                        <button class="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-colors inline-flex items-center gap-2"><i data-lucide="download" class="w-5 h-5"></i> Descargar Template (.json)</button>
+                    </div>
                 `
             },
             {
                 id: 'auditoria-nocode',
                 type: 'GUÍA OPERATIVA',
-                title: 'Eliminando el Operational Drag',
-                desc: 'Cómo delegar tareas repetitivas en Zapier y Make para que te dediques 80% a vender y 20% a operar.',
+                title: 'Bypass al Operational Drag',
+                desc: 'Sistematizá con Zapier y Make. Dedicá el 80% de tu tiempo a vender High Ticket, no a tareas repetitivas.',
                 icon: 'cpu',
                 color: 'text-purple-500',
+                borderHover: 'group-hover:border-purple-500/30',
                 content: `
-                    <div class="mb-8">
-                        <span class="text-purple-500 font-mono text-xs font-bold mb-2 block">GUÍA DE SISTEMAS</span>
-                        <h2 class="text-4xl font-black mb-4">Eliminando el Operational Drag</h2>
-                        <p class="text-gray-400">Si pasas 8 horas modeando un funnel por $100, estás quebrado.</p>
+                    <div class="mb-10 text-center">
+                        <span class="inline-block px-3 py-1 bg-purple-500/10 border border-purple-500/20 text-purple-500 font-mono text-xs font-bold rounded-full mb-6">DOC INTERNO</span>
+                        <h2 class="text-4xl md:text-5xl font-black mb-6">Destruyendo el Drag</h2>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-4 mb-8">
-                        <div class="p-6 bg-dark-800 rounded-xl border border-white/5">
-                            <h4 class="font-bold mb-2">Paso 1: Productización</h4>
-                            <p class="text-sm text-gray-400">Estandarizá tu entregable. No hagas nada a medida. Creá paquetes fijos.</p>
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-8 bg-dark-900 rounded-3xl border border-white/5 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-purple-500/10 rounded-full blur-xl"></div>
+                            <i data-lucide="package" class="w-8 h-8 text-purple-400 mb-4"></i>
+                            <h4 class="text-xl font-bold mb-2 text-white">1. Productización</h4>
+                            <p class="text-sm text-gray-400">Si cobrás por proyecto a medida, tu negocio no escala. Creá un servicio con bordes duros. "Hago X para Y obteniendo Z".</p>
                         </div>
-                        <div class="p-6 bg-dark-800 rounded-xl border border-white/5">
-                            <h4 class="font-bold mb-2">Paso 2: Automatización</h4>
-                            <p class="text-sm text-gray-400">Onboarding, cobros (Lemon Squeezy), accesos... todo en Zapier.</p>
+                        <div class="p-8 bg-dark-900 rounded-3xl border border-white/5 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-purple-500/10 rounded-full blur-xl"></div>
+                            <i data-lucide="webhook" class="w-8 h-8 text-purple-400 mb-4"></i>
+                            <h4 class="text-xl font-bold mb-2 text-white">2. Automatización Total</h4>
+                            <p class="text-sm text-gray-400">Onboarding de clientes conectado a Slack, contratos por Docusign automáticos, cobros por Stripe. Cero contacto manual.</p>
                         </div>
                     </div>
                 `
             }
         ];
 
-        // Renderizar Grid de Entregables
+        // Render Grid
         function renderDeliverables() {
             const grid = document.getElementById('deliverables-grid');
             grid.innerHTML = deliverables.map(item => `
-                <div onclick="openDeliverable('${item.id}')" class="glass-card p-6 rounded-2xl cursor-pointer group h-full flex flex-col">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="p-3 bg-dark-900 rounded-xl border border-white/5 group-hover:border-white/20 transition-colors">
-                            <i data-lucide="${item.icon}" class="w-6 h-6 ${item.color}"></i>
+                <div onclick="openDeliverable('${item.id}')" class="glass-card p-8 rounded-3xl cursor-pointer group h-full flex flex-col ${item.borderHover}">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-dark-900 rounded-2xl border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                            <i data-lucide="${item.icon}" class="w-7 h-7 ${item.color}"></i>
                         </div>
-                        <span class="font-mono text-xs font-bold ${item.color} tracking-wider">${item.type}</span>
+                        <span class="font-mono text-xs font-bold ${item.color} tracking-wider uppercase">${item.type}</span>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 group-hover:text-delta-500 transition-colors">${item.title}</h3>
-                    <p class="text-gray-400 text-sm mb-6 flex-1">${item.desc}</p>
-                    <div class="flex items-center gap-2 text-sm font-bold text-white mt-auto">
-                        Acceder Recurso <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                    <h3 class="text-2xl font-bold mb-4 text-white group-hover:text-delta-500 transition-colors">${item.title}</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-8 flex-1">${item.desc}</p>
+                    <div class="flex items-center gap-2 text-sm font-bold text-gray-300 group-hover:text-white mt-auto pt-4 border-t border-white/5">
+                        Ingresar a la Base <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform text-delta-500"></i>
                     </div>
                 </div>
             `).join('');
-            lucide.createIcons(); // Refrescar iconos
+            lucide.createIcons();
         }
         renderDeliverables();
 
-        // 3. Sistema de Ruteo (SPA Logic)
+        // Router
         function navigate(viewId) {
-            // Ocultar todas
             document.querySelectorAll('.router-view').forEach(view => {
                 view.classList.remove('active-view');
             });
             
-            // Timeout ligero para que el display:block se asiente antes de animar opacidad
             const target = document.getElementById(`view-${viewId}`);
             if(target) {
                 target.style.display = 'block';
                 setTimeout(() => {
                     target.classList.add('active-view');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                    // Re-trigger reveal animations for new view
                     triggerReveals();
                 }, 50);
             }
             
-            // Ocultar otros
             document.querySelectorAll('.router-view:not(#view-' + viewId + ')').forEach(view => {
-                setTimeout(() => {
-                    view.style.display = 'none';
-                }, 400); // Wait for transition
+                setTimeout(() => { view.style.display = 'none'; }, 500);
             });
         }
 
-        // 4. Lógica de Interfaz y Animaciones complejas (Entregables)
+        // Interfaz Entregables
         function openDeliverable(id) {
             const data = deliverables.find(d => d.id === id);
             if(!data) return;
@@ -689,28 +658,26 @@
             content.innerHTML = data.content;
             lucide.createIcons();
 
-            // Animar entrada (Clip-path expansivo)
             modal.classList.remove('hidden');
-            // Timeout corto para permitir reflow y que corra la transición de css
             setTimeout(() => {
-                modal.classList.add('modal-open');
-                modal.classList.remove('pointer-events-none');
-                document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('translate-y-10');
+                document.body.style.overflow = 'hidden';
             }, 10);
         }
 
         function closeDeliverable() {
             const modal = document.getElementById('deliverable-modal');
-            modal.classList.remove('modal-open');
-            modal.classList.add('pointer-events-none');
-            document.body.style.overflow = 'auto'; // Restaurar scroll
+            const content = document.getElementById('modal-content');
             
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 500); // Tiempo de la transición CSS
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.add('translate-y-10');
+            document.body.style.overflow = 'auto';
+            
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
-        // Mobile Menu Toggle
+        // Menú Mobile
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             if(menu.classList.contains('hidden')) {
@@ -724,33 +691,33 @@
             }
         }
 
-        // 5. Scroll Reveal System (Efecto WOW)
+        // Scroll Reveal
         function triggerReveals() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
-            const elementVisible = 100;
-
+            
             reveals.forEach(reveal => {
                 const elementTop = reveal.getBoundingClientRect().top;
-                if (elementTop < windowHeight - elementVisible) {
+                if (elementTop < windowHeight - 100) {
                     reveal.classList.add("active");
                 }
             });
         }
 
-        // Navbar bg change on scroll
+        // Navbar bg
         function handleScroll() {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
-                nav.classList.add('bg-dark-950/90', 'shadow-xl');
+                nav.classList.add('bg-dark-950/90', 'shadow-2xl');
+                nav.classList.remove('border-b-0');
             } else {
-                nav.classList.remove('bg-dark-950/90', 'shadow-xl');
+                nav.classList.remove('bg-dark-950/90', 'shadow-2xl');
+                nav.classList.add('border-b-0');
             }
             triggerReveals();
         }
 
         window.addEventListener('scroll', handleScroll);
-        // Trigger inicial
         setTimeout(triggerReveals, 100);
 
     </script>
