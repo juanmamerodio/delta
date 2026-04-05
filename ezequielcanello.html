@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta Blueprint | Estrategia Ezequiel Canello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        delta: {
+                            bg: '#030303',
+                            panel: '#0a0a0a',
+                            border: '#1a1a1a',
+                            accent: '#FF5F05', /* Naranja Tech Delta */
+                            text: '#f3f4f6',
+                            muted: '#8b8b8b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700;900&display=swap');
+        
+        body { background-color: #030303; color: #f3f4f6; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF5F05; }
+
+        .glow-text { text-shadow: 0 0 15px rgba(255, 95, 5, 0.4); }
+        .glow-border { box-shadow: 0 0 20px rgba(255, 95, 5, 0.1); border-color: rgba(255, 95, 5, 0.3); }
+        
+        /* Interactive Map Styles */
+        .node-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .node-card.active .node-content {
+            max-height: 1500px;
+            opacity: 1;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #1a1a1a;
+        }
+        
+        .node-card { transition: all 0.3s ease; }
+        .node-card:hover { border-color: #333; transform: translateX(5px); }
+        .node-card.active { border-color: #FF5F05; background: linear-gradient(180deg, #0a0a0a 0%, #110804 100%); }
+        
+        .step-number { transition: all 0.3s ease; }
+        .node-card.active .step-number {
+            background-color: #FF5F05;
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 95, 5, 0.5);
+        }
+
+        .delta-logo {
+            width: 0; height: 0; 
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 18px solid #FF5F05;
+            position: relative;
+        }
+        .delta-logo::after {
+            content: ''; position: absolute; top: 4px; left: -6px;
+            width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-bottom: 11px solid #030303; 
+        }
+
+        /* Offers Slider Styles */
+        .offer-tab { transition: all 0.2s ease; }
+        .offer-tab.active { background-color: rgba(255, 95, 5, 0.1); border-color: #FF5F05; color: #FF5F05; }
+        .offer-panel { display: none; animation: fadeIn 0.4s ease forwards; }
+        .offer-panel.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-delta-accent selection:text-black min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full p-6 border-b border-delta-border bg-delta-bg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="delta-logo"></div>
+                <div>
+                    <h1 class="font-bold text-xl tracking-tight">DELTA <span class="text-delta-muted font-normal">BLUEPRINT</span></h1>
+                    <p class="font-mono text-xs text-delta-accent">OBJETIVO: EZEQUIEL CANELLO</p>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-4 font-mono text-xs text-delta-muted">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-gamepad text-delta-accent"></i> STATUS: FREELANCE QA</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-arrow-right"></i></span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-rocket text-green-500"></i> TARGET: STUDIO CONSULTANT</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6 py-12">
+        <div class="max-w-4xl mx-auto">
+            
+            <div class="mb-12">
+                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">De Buscar Bugs a <br><span class="text-delta-accent glow-text">Salvar Lanzamientos en Steam</span>.</h2>
+                <p class="text-delta-muted font-mono text-sm">El mapa definitivo para monetizar tu obsesión por la inmersión del jugador y la optimización de estudios.</p>
+            </div>
+
+            <!-- The Map -->
+            <div class="relative border-l border-delta-border ml-6 pl-8 space-y-8" id="roadmap">
+                
+                <!-- Fase 1 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        01
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ DIAGNÓSTICO DE LA REALIDAD</h3>
+                            <h4 class="text-2xl font-bold">La Trampa del "QA Tester Freelance"</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-lg">
+                                <h5 class="text-red-500 font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-xmark"></i> El Error Actual</h5>
+                                <p class="text-sm text-delta-muted mb-3">Estás vendiendo tu tiempo por hora buscando bugs mecánicos. Las empresas te ven como un gasto necesario, no como una inversión crítica.</p>
+                                <ul class="text-xs font-mono space-y-1 text-red-400/70">
+                                    <li>- Compites contra miles de testers en Upwork/Fiverr.</li>
+                                    <li>- Cobras por horas trabajadas.</li>
+                                    <li>- Entrás tarde al proyecto (al final).</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-950/20 border border-green-900/30 p-4 rounded-lg">
+                                <h5 class="text-green-500 font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-check"></i> La Realidad Delta</h5>
+                                <p class="text-sm text-delta-muted mb-3">Tu posteo sobre "la sombra que arruina la inmersión" lo demuestra. No encontrás bugs, vos prevenís que el juego sea bombardeado con reseñas negativas (Review Bombing).</p>
+                                <ul class="text-xs font-mono space-y-1 text-green-400/70">
+                                    <li>+ Vendemos Protección de Lanzamiento.</li>
+                                    <li>+ El cliente es el Director del Estudio.</li>
+                                    <li>+ Cobras por Milestone o Retainer High Ticket.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 2 (SELECTOR DE OFERTAS) -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group active glow-border" id="fase-2" onclick="toggleNode(this, event)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        02
+                    </div>
+                    
+                    <div class="flex justify-between items-center pointer-events-none">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ INGENIERÍA DE LA OFERTA</h3>
+                            <h4 class="text-2xl font-bold">Vehículos de Escalabilidad (Tu Arsenal)</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-accent transition-transform duration-300" style="transform: rotate(180deg);"></i>
+                    </div>
+                    
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
+                        <p class="text-delta-muted mb-6 text-sm">Tu perfil es un híbrido entre QA, Creador de IA y Estratega. Acá tenés 3 ofertas empaquetadas. Elegí en cuál querés jugar y nosotros (Delta) traemos a los clientes.</p>
+                        
+                        <!-- Tabs -->
+                        <div class="flex gap-2 overflow-x-auto mb-6 pb-2 snap-x font-mono text-xs">
+                            <button onclick="switchOffer(0)" id="tab-0" class="offer-tab active shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🛡️ Principal: Game Feel & Launch Protection</button>
+                            <button onclick="switchOffer(1)" id="tab-1" class="offer-tab shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🤖 Alt 1: AI Content Engine</button>
+                            <button onclick="switchOffer(2)" id="tab-2" class="offer-tab shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">📈 Alt 2: Web3 / P2E Strategy</button>
+                        </div>
+
+                        <!-- Content Panels -->
+                        <div class="bg-delta-bg border border-delta-border p-6 rounded-lg relative overflow-hidden transition-all">
+                            
+                            <!-- Oferta 0 -->
+                            <div id="panel-0" class="offer-panel active">
+                                <div class="absolute top-0 right-0 bg-delta-accent text-black font-bold text-xs px-2 py-1 font-mono">LA BOMBA ATÓMICA</div>
+                                <h5 class="text-lg font-bold text-delta-accent mb-3">Launch Protection & QA Experience</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Ayudo a estudios Indie/AA a auditar el flujo completo y 'Game Feel' de sus proyectos antes del lanzamiento, previniendo bugs de inmersión que arruinan las reseñas en Steam y las ventas del Día 1."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Estudios AA o Indies con Publisher (Steam).</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$2,500 - $5,000 USD (Por Milestone/Lanzamiento)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">EL DOLOR QUE RESOLVES</span> "Si mi juego sale lleno de bugs visuales, los streamers me matan, recibo 'Mixed Reviews' y el algoritmo de Steam entierra mi juego para siempre."</div>
+                                </div>
+                            </div>
+
+                            <!-- Oferta 1 -->
+                            <div id="panel-1" class="offer-panel">
+                                <div class="absolute top-0 right-0 bg-[#3b82f6] text-white font-bold text-xs px-2 py-1 font-mono">SISTEMA AUTOMATIZADO</div>
+                                <h5 class="text-lg font-bold text-[#3b82f6] mb-3">Motor de Contenido IA para Estudios</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Implemento sistemas de Inteligencia Artificial para estudios de desarrollo, automatizando la creación de Devlogs, guiones y cinemáticas para marketing, mientras el equipo se enfoca 100% en programar."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Estudios sin departamento de Marketing.</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$1,500 - $3,000 USD (Retainer Mensual)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">POR QUÉ ES IDEAL PARA VOS</span> Capitalizamos tu rol como "Jefe de Contenidos Digitales IA". Les armás la máquina y les vendés suscripción mensual.</div>
+                                </div>
+                            </div>
+
+                            <!-- Oferta 2 -->
+                            <div id="panel-2" class="offer-panel">
+                                <div class="absolute top-0 right-0 bg-[#a855f7] text-white font-bold text-xs px-2 py-1 font-mono">CONSULTORÍA PURA</div>
+                                <h5 class="text-lg font-bold text-[#a855f7] mb-3">Estrategia Web3 & Economía Play-to-Earn</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Asesoro a Guilds y proyectos Play-To-Earn para optimizar sus estrategias de juego y economía interna, maximizando el ROI de sus jugadores y reteniendo la base de usuarios."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Crypto Guilds / Juegos Web3.</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$2,000 USD / mes (Consultoría)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">POR QUÉ ES IDEAL PARA VOS</span> Revivimos tu etapa como "Director de CriptoGamers". Solo estrategia y coaching. Cero testeo manual.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        03
+                    </div>
+                    
+                    <div class="flex justify-between items-center pointer-events-none">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ SISTEMA DE ADQUISICIÓN (ROL DELTA)</h3>
+                            <h4 class="text-2xl font-bold">De Freelancer a Agencia Unipersonal</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
+                        <p class="text-delta-muted mb-6 text-sm">Vos sos el francotirador. Delta es el que te marca los objetivos. Yo instalo la infraestructura para que los clientes lleguen pre-calificados a tu agenda.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
+                                <div class="w-10 h-10 rounded bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0">
+                                    <i class="fa-brands fa-linkedin-in text-xl"></i>
+                                </div>
+                                <div>
+                                    <h6 class="font-bold mb-1">Prospección Outbound B2B (Directores)</h6>
+                                    <p class="text-xs text-delta-muted">Usamos LinkedIn Sales Navigator para contactar a Productores y Game Directors meses antes de su lanzamiento. El hook: "Vi tu demo, me encantó, pero noté un flujo que rompe la inmersión. Armé este reporte."</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
+                                <div class="w-10 h-10 rounded bg-delta-accent/20 text-delta-accent flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-robot text-xl"></i>
+                                </div>
+                                <div>
+                                    <h6 class="font-bold mb-1">Embudo de Contenido (Instagram/Twitter)</h6>
+                                    <p class="text-xs text-delta-muted">Transformamos tus posts (como el de la sombra flotante) en contenido viral. Usamos Manychat para que los Devs Indies comenten "QA" y reciban un 'Checklist de Inmersión' a cambio de su contacto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 4 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        04
+                    </div>
+                    
+                    <div class="flex justify-between items-center pointer-events-none">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ EJECUCIÓN Y ASOCIACIÓN</h3>
+                            <h4 class="text-2xl font-bold">El Trato (Shadow Operation)</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
+                        <div class="bg-delta-bg p-6 rounded-lg border border-delta-border">
+                            <p class="text-sm text-delta-muted mb-6 leading-relaxed">
+                                Mi negocio no es venderte humo, es ser tu socio comercial. 
+                                Yo manejo los mensajes, instalo el bot y prospecto a los estudios. 
+                                Vos entrás a la videollamada, les demostrás por qué sos la pieza que falta para su lanzamiento, y cerrás el trato.
+                            </p>
+                            
+                            <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-delta-panel p-4 rounded border border-[#333]">
+                                <div class="text-center md:text-left">
+                                    <span class="block font-mono text-xs text-delta-muted mb-1">TU ÚNICA TAREA</span>
+                                    <span class="font-bold text-white">Auditar juegos y cerrar ventas pre-filtradas.</span>
+                                </div>
+                                <div class="text-center md:text-right">
+                                    <span class="block font-mono text-xs text-delta-muted mb-1">VALOR PROYECTADO MENSUAL</span>
+                                    <span class="font-bold text-delta-accent text-xl">$5,000 - $10,000 USD+</span>
+                                </div>
+                            </div>
+
+                            <button class="mt-6 w-full bg-delta-accent text-black font-bold py-4 rounded hover:bg-white transition-colors duration-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-handshake"></i> INICIAR ASOCIACIÓN DELTA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Lógica de Acordeón
+        function toggleNode(element, event) {
+            if(event && event.target.tagName === 'BUTTON') return; 
+
+            const isActive = element.classList.contains('active');
+            
+            // Cierra todos
+            document.querySelectorAll('.node-card').forEach(card => {
+                card.classList.remove('active');
+                card.classList.remove('glow-border');
+                const icon = card.querySelector('.fa-chevron-down');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+                const headerIcon = card.querySelector('h4').parentNode.parentNode.querySelector('i');
+                if(headerIcon) headerIcon.classList.remove('text-delta-accent');
+                if(headerIcon) headerIcon.classList.add('text-delta-muted');
+            });
+
+            // Si no estaba activo, lo abre
+            if (!isActive) {
+                element.classList.add('active');
+                element.classList.add('glow-border');
+                const icon = element.querySelector('.fa-chevron-down');
+                if(icon) {
+                    icon.style.transform = 'rotate(180deg)';
+                    icon.classList.remove('text-delta-muted');
+                    icon.classList.add('text-delta-accent');
+                }
+            }
+        }
+        
+        // Lógica del Slider de Ofertas
+        function switchOffer(index) {
+            document.querySelectorAll('.offer-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.offer-panel').forEach(panel => panel.classList.remove('active'));
+
+            document.getElementById(`tab-${index}`).classList.add('active');
+            document.getElementById(`panel-${index}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
