@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta Blueprint | Estrategia Juan Rodrigo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        delta: {
+                            bg: '#030303',
+                            panel: '#0a0a0a',
+                            border: '#1a1a1a',
+                            accent: '#FF5F05', /* Naranja Tech Delta */
+                            text: '#f3f4f6',
+                            muted: '#8b8b8b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700;900&display=swap');
+        
+        body { background-color: #030303; color: #f3f4f6; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF5F05; }
+
+        .glow-text { text-shadow: 0 0 15px rgba(255, 95, 5, 0.4); }
+        .glow-border { box-shadow: 0 0 20px rgba(255, 95, 5, 0.1); border-color: rgba(255, 95, 5, 0.3); }
+        
+        /* Interactive Map Styles */
+        .node-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .node-card.active .node-content {
+            max-height: 1000px; /* Arbitrary large number */
+            opacity: 1;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #1a1a1a;
+        }
+        
+        .node-card { transition: all 0.3s ease; }
+        .node-card:hover { border-color: #333; transform: translateX(5px); }
+        .node-card.active { border-color: #FF5F05; background: linear-gradient(180deg, #0a0a0a 0%, #110804 100%); }
+        
+        .step-number {
+            transition: all 0.3s ease;
+        }
+        .node-card.active .step-number {
+            background-color: #FF5F05;
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 95, 5, 0.5);
+        }
+
+        .delta-logo {
+            width: 0; height: 0; 
+            border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 18px solid #FF5F05;
+            position: relative;
+        }
+        .delta-logo::after {
+            content: ''; position: absolute; top: 4px; left: -6px;
+            width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-bottom: 11px solid #030303; 
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-delta-accent selection:text-black min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full p-6 border-b border-delta-border bg-delta-bg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="delta-logo"></div>
+                <div>
+                    <h1 class="font-bold text-xl tracking-tight">DELTA <span class="text-delta-muted font-normal">BLUEPRINT</span></h1>
+                    <p class="font-mono text-xs text-delta-accent">OBJETIVO: JUAN RODRIGO</p>
+                </div>
+            </div>
+            <div class="hidden md:flex gap-4 font-mono text-xs text-delta-muted">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-server text-delta-accent"></i> STATUS: L3 SUPPORT</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-arrow-right"></i></span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-green-500"></i> TARGET: HT CONSULTANT</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6 py-12">
+        <div class="max-w-4xl mx-auto">
+            
+            <div class="mb-12">
+                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">De Mendigar en LinkedIn a <br><span class="text-delta-accent glow-text">Dominar el Sector Financiero</span>.</h2>
+                <p class="text-delta-muted font-mono text-sm">Este es el mapa exacto para capitalizar tus 10+ años de experiencia en Java y Arquitecturas Críticas.</p>
+            </div>
+
+            <!-- The Map -->
+            <div class="relative border-l border-delta-border ml-6 pl-8 space-y-8" id="roadmap">
+                
+                <!-- Fase 1 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        01
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ DIAGNÓSTICO DE LA REALIDAD</h3>
+                            <h4 class="text-2xl font-bold">La Trampa del "Open to Work"</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-red-950/20 border border-red-900/30 p-4 rounded-lg">
+                                <h5 class="text-red-500 font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-xmark"></i> El Error Actual</h5>
+                                <p class="text-sm text-delta-muted mb-3">Estás vendiendo "Ingeniería Java 21 y Soporte L3" a reclutadores de RRHH que no entienden la magnitud de tu conocimiento.</p>
+                                <ul class="text-xs font-mono space-y-1 text-red-400/70">
+                                    <li>- Compites por salario (Precio).</li>
+                                    <li>- Eres un "gasto" para la empresa.</li>
+                                    <li>- Te ven como un empleado más.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-950/20 border border-green-900/30 p-4 rounded-lg">
+                                <h5 class="text-green-500 font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-check"></i> La Realidad Delta</h5>
+                                <p class="text-sm text-delta-muted mb-3">Tus habilidades de migrar sistemas bancarios (ASO/APX) a microservicios valen millones en mitigación de riesgos y downtime.</p>
+                                <ul class="text-xs font-mono space-y-1 text-green-400/70">
+                                    <li>+ Compites por Valor de Transformación.</li>
+                                    <li>+ Eres una inversión estratégica.</li>
+                                    <li>+ Hablas directo con el CTO/CEO.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        02
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ INGENIERÍA DE LA OFERTA</h3>
+                            <h4 class="text-2xl font-bold">La Ecuación de Valor</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content">
+                        <p class="text-delta-muted mb-4 text-sm">Destruimos tu CV y construimos una <strong>Oferta Irresistible</strong> apuntada a un nicho hiper-específico (Sector Financiero / Fintechs).</p>
+                        
+                        <div class="bg-delta-bg border border-delta-accent p-6 rounded-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-delta-accent text-black font-bold text-xs px-2 py-1 font-mono">NUEVO PITCH</div>
+                            <p class="text-xl font-medium leading-relaxed">
+                                "Ayudo a instituciones financieras a <span class="text-delta-accent">migrar arquitecturas legacy a microservicios (Java 21/Spring Boot) sin downtime</span>, garantizando alta disponibilidad y reduciendo los costos de infraestructura."
+                            </p>
+                        </div>
+                        
+                        <div class="mt-4 grid grid-cols-3 gap-4 text-center font-mono text-xs">
+                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
+                                <span class="block text-delta-muted mb-1">Nicho</span>
+                                <span class="text-white font-bold">Bancos/Fintech</span>
+                            </div>
+                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
+                                <span class="block text-delta-muted mb-1">Vehículo</span>
+                                <span class="text-white font-bold">Java 21 / Cloud</span>
+                            </div>
+                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
+                                <span class="block text-delta-muted mb-1">Precio (Ticket)</span>
+                                <span class="text-green-500 font-bold">$10,000+ USD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        03
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ SISTEMA DE ADQUISICIÓN (ROL DELTA)</h3>
+                            <h4 class="text-2xl font-bold">La Máquina de Prospectos</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content">
+                        <p class="text-delta-muted mb-6 text-sm">Vos sos experto en código, no en marketing. Delta asume el riesgo y el trabajo sucio. Instalamos nuestro sistema de prospección B2B en tu LinkedIn.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
+                                <div class="w-10 h-10 rounded bg-blue-900/20 text-blue-500 flex items-center justify-center shrink-0">
+                                    <i class="fa-brands fa-linkedin-in text-xl"></i>
+                                </div>
+                                <div>
+                                    <h6 class="font-bold mb-1">Optimización de Perfil (Inbound)</h6>
+                                    <p class="text-xs text-delta-muted">Transformamos tu perfil de "Buscando empleo" a una Landing Page de ventas (Banner, Titular, Casos de éxito con Cementos Moctezuma y Minsait).</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
+                                <div class="w-10 h-10 rounded bg-delta-accent/20 text-delta-accent flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-robot text-xl"></i>
+                                </div>
+                                <div>
+                                    <h6 class="font-bold mb-1">Prospección Outbound con Sales Nav</h6>
+                                    <p class="text-xs text-delta-muted">Creamos campañas automatizadas atacando a CTOs y Directores de IT con mensajes directos al dolor ("¿Su sistema COBOL se está quedando obsoleto?").</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 4 -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group glow-border" onclick="toggleNode(this)">
+                    <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
+                        04
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-mono text-delta-accent mb-1">/ EJECUCIÓN Y ASOCIACIÓN</h3>
+                            <h4 class="text-2xl font-bold">El Trato (Shadow Operation)</h4>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                    </div>
+                    
+                    <div class="node-content">
+                        <div class="bg-delta-bg p-6 rounded-lg border border-delta-border">
+                            <p class="text-sm text-delta-muted mb-6 leading-relaxed">
+                                No te voy a cobrar una mentoría. Me voy a asociar con vos. 
+                                Yo construyo el embudo, prospecto a los CTOs y te agendo las llamadas. 
+                                Vos te presentás como la autoridad técnica, cerrás el trato y entregás la migración.
+                            </p>
+                            
+                            <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-delta-panel p-4 rounded border border-[#333]">
+                                <div class="text-center md:text-left">
+                                    <span class="block font-mono text-xs text-delta-muted mb-1">TU ÚNICA TAREA</span>
+                                    <span class="font-bold text-white">Atender llamadas y ejecutar código.</span>
+                                </div>
+                                <div class="text-center md:text-right">
+                                    <span class="block font-mono text-xs text-delta-muted mb-1">VALOR PROYECTADO MENSUAL</span>
+                                    <span class="font-bold text-delta-accent text-xl">$10,000 USD+</span>
+                                </div>
+                            </div>
+
+                            <button class="mt-6 w-full bg-delta-accent text-black font-bold py-4 rounded hover:bg-white transition-colors duration-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-handshake"></i> INICIAR ASOCIACIÓN DELTA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleNode(element) {
+            // Cierra los otros nodos
+            document.querySelectorAll('.node-card').forEach(card => {
+                if(card !== element) {
+                    card.classList.remove('active');
+                    card.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            // Toggle actual
+            element.classList.toggle('active');
+            const icon = element.querySelector('.fa-chevron-down');
+            if (element.classList.contains('active')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // Abrir el primero por defecto al cargar
+        setTimeout(() => {
+            toggleNode(document.querySelectorAll('.node-card')[0]);
+        }, 500);
+    </script>
+</body>
+</html>
