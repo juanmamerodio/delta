@@ -36,7 +36,7 @@
         body { background-color: #030303; color: #f3f4f6; }
         
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #030303; }
         ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #FF5F05; }
@@ -52,7 +52,7 @@
             opacity: 0;
         }
         .node-card.active .node-content {
-            max-height: 1000px; /* Arbitrary large number */
+            max-height: 1500px; /* Ampliado para el contenido dinámico */
             opacity: 1;
             margin-top: 1.5rem;
             padding-top: 1.5rem;
@@ -63,9 +63,7 @@
         .node-card:hover { border-color: #333; transform: translateX(5px); }
         .node-card.active { border-color: #FF5F05; background: linear-gradient(180deg, #0a0a0a 0%, #110804 100%); }
         
-        .step-number {
-            transition: all 0.3s ease;
-        }
+        .step-number { transition: all 0.3s ease; }
         .node-card.active .step-number {
             background-color: #FF5F05;
             color: #000;
@@ -82,6 +80,17 @@
             width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
             border-bottom: 11px solid #030303; 
         }
+
+        /* Offers Slider Styles */
+        .offer-tab { transition: all 0.2s ease; }
+        .offer-tab.active { background-color: rgba(255, 95, 5, 0.1); border-color: #FF5F05; color: #FF5F05; }
+        .offer-panel { display: none; animation: fadeIn 0.4s ease forwards; }
+        .offer-panel.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="font-sans antialiased selection:bg-delta-accent selection:text-black min-h-screen flex flex-col">
@@ -93,11 +102,11 @@
                 <div class="delta-logo"></div>
                 <div>
                     <h1 class="font-bold text-xl tracking-tight">DELTA <span class="text-delta-muted font-normal">BLUEPRINT</span></h1>
-                    <p class="font-mono text-xs text-delta-accent">OBJETIVO: JUAN RODRIGO</p>
+                    <p class="font-mono text-xs text-delta-accent">OBJETIVO: JUAN RODRIGO CAMACHO</p>
                 </div>
             </div>
             <div class="hidden md:flex gap-4 font-mono text-xs text-delta-muted">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-server text-delta-accent"></i> STATUS: L3 SUPPORT</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-server text-delta-accent"></i> STATUS: L3 SUPPORT / OPEN TO WORK</span>
                 <span class="flex items-center gap-2"><i class="fa-solid fa-arrow-right"></i></span>
                 <span class="flex items-center gap-2"><i class="fa-solid fa-user-tie text-green-500"></i> TARGET: HT CONSULTANT</span>
             </div>
@@ -109,8 +118,8 @@
         <div class="max-w-4xl mx-auto">
             
             <div class="mb-12">
-                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">De Mendigar en LinkedIn a <br><span class="text-delta-accent glow-text">Dominar el Sector Financiero</span>.</h2>
-                <p class="text-delta-muted font-mono text-sm">Este es el mapa exacto para capitalizar tus 10+ años de experiencia en Java y Arquitecturas Críticas.</p>
+                <h2 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">De Mendigar en LinkedIn a <br><span class="text-delta-accent glow-text">Dominar el Sector Tech Financiero</span>.</h2>
+                <p class="text-delta-muted font-mono text-sm">Este es el mapa exacto para capitalizar tus 10+ años de experiencia en Java, CCNA y Arquitecturas Críticas.</p>
             </div>
 
             <!-- The Map -->
@@ -143,7 +152,7 @@
                             </div>
                             <div class="bg-green-950/20 border border-green-900/30 p-4 rounded-lg">
                                 <h5 class="text-green-500 font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-check"></i> La Realidad Delta</h5>
-                                <p class="text-sm text-delta-muted mb-3">Tus habilidades de migrar sistemas bancarios (ASO/APX) a microservicios valen millones en mitigación de riesgos y downtime.</p>
+                                <p class="text-sm text-delta-muted mb-3">Tus habilidades en Ciberseguridad, Redes (CCNA) y migraciones bancarias valen millones en mitigación de riesgos y downtime.</p>
                                 <ul class="text-xs font-mono space-y-1 text-green-400/70">
                                     <li>+ Compites por Valor de Transformación.</li>
                                     <li>+ Eres una inversión estratégica.</li>
@@ -154,43 +163,90 @@
                     </div>
                 </div>
 
-                <!-- Fase 2 -->
-                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
+                <!-- Fase 2 (NUEVA CON SELECTOR DE OFERTAS) -->
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group active glow-border" id="fase-2" onclick="toggleNode(this, event)">
                     <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
                         02
                     </div>
                     
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center pointer-events-none">
                         <div>
                             <h3 class="text-sm font-mono text-delta-accent mb-1">/ INGENIERÍA DE LA OFERTA</h3>
-                            <h4 class="text-2xl font-bold">La Ecuación de Valor</h4>
+                            <h4 class="text-2xl font-bold">Vehículos de Transformación (Elige tu perfil)</h4>
                         </div>
-                        <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
+                        <i class="fa-solid fa-chevron-down text-delta-accent transition-transform duration-300" style="transform: rotate(180deg);"></i>
                     </div>
                     
-                    <div class="node-content">
-                        <p class="text-delta-muted mb-4 text-sm">Destruimos tu CV y construimos una <strong>Oferta Irresistible</strong> apuntada a un nicho hiper-específico (Sector Financiero / Fintechs).</p>
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
+                        <p class="text-delta-muted mb-6 text-sm">Destruimos tu CV genérico. Acá tenés 4 arsenales listos para usar según donde te sientas más cómodo operando. Yo me encargo de vender el que elijas.</p>
                         
-                        <div class="bg-delta-bg border border-delta-accent p-6 rounded-lg relative overflow-hidden">
-                            <div class="absolute top-0 right-0 bg-delta-accent text-black font-bold text-xs px-2 py-1 font-mono">NUEVO PITCH</div>
-                            <p class="text-xl font-medium leading-relaxed">
-                                "Ayudo a instituciones financieras a <span class="text-delta-accent">migrar arquitecturas legacy a microservicios (Java 21/Spring Boot) sin downtime</span>, garantizando alta disponibilidad y reduciendo los costos de infraestructura."
-                            </p>
+                        <!-- Tabs -->
+                        <div class="flex gap-2 overflow-x-auto mb-6 pb-2 snap-x font-mono text-xs">
+                            <button onclick="switchOffer(0)" id="tab-0" class="offer-tab active shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🚀 Principal: Migración Core</button>
+                            <button onclick="switchOffer(1)" id="tab-1" class="offer-tab shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🛡️ Alt 1: El Escudo (Cyber)</button>
+                            <button onclick="switchOffer(2)" id="tab-2" class="offer-tab shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🚑 Alt 2: El Bombero (L3)</button>
+                            <button onclick="switchOffer(3)" id="tab-3" class="offer-tab shrink-0 px-4 py-2 rounded border border-delta-border bg-delta-bg hover:border-delta-accent">🏫 Alt 3: El Mentor B2C</button>
                         </div>
-                        
-                        <div class="mt-4 grid grid-cols-3 gap-4 text-center font-mono text-xs">
-                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
-                                <span class="block text-delta-muted mb-1">Nicho</span>
-                                <span class="text-white font-bold">Bancos/Fintech</span>
+
+                        <!-- Content Panels -->
+                        <div class="bg-delta-bg border border-delta-border p-6 rounded-lg relative overflow-hidden transition-all">
+                            
+                            <!-- Oferta 0 -->
+                            <div id="panel-0" class="offer-panel active">
+                                <div class="absolute top-0 right-0 bg-delta-accent text-black font-bold text-xs px-2 py-1 font-mono">LA BOMBA ATÓMICA</div>
+                                <h5 class="text-lg font-bold text-delta-accent mb-3">Migración Legacy a Java 21</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Ayudo a Instituciones Financieras a migrar sus sistemas Legacy a microservicios en Java 21 sin downtime, garantizando alta disponibilidad."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Bancos, Fintechs, Aseguradoras.</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$10,000 - $30,000 USD (Proyecto)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">EL DOLOR QUE RESOLVES</span> "Mi sistema en COBOL/Java 8 se cae en picos de usuarios, perdiendo plata y reputación."</div>
+                                </div>
                             </div>
-                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
-                                <span class="block text-delta-muted mb-1">Vehículo</span>
-                                <span class="text-white font-bold">Java 21 / Cloud</span>
+
+                            <!-- Oferta 1 -->
+                            <div id="panel-1" class="offer-panel">
+                                <div class="absolute top-0 right-0 bg-[#3b82f6] text-white font-bold text-xs px-2 py-1 font-mono">CONSULTORÍA PURA</div>
+                                <h5 class="text-lg font-bold text-[#3b82f6] mb-3">Auditoría Perimetral y Redes</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Audito y fortalezco la arquitectura de red y seguridad perimetral de startups Fintech para prevenir vulnerabilidades antes de levantar capital."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Startups Fintech (Seed / Serie A).</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$5,000 - $8,000 USD (Auditoría)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">POR QUÉ ES IDEAL PARA VOS</span> Menos código puro. Aprovechamos al máximo tu CCNA y Diplomado en Ciberseguridad.</div>
+                                </div>
                             </div>
-                            <div class="bg-delta-bg p-3 rounded border border-delta-border">
-                                <span class="block text-delta-muted mb-1">Precio (Ticket)</span>
-                                <span class="text-green-500 font-bold">$10,000+ USD</span>
+
+                            <!-- Oferta 2 -->
+                            <div id="panel-2" class="offer-panel">
+                                <div class="absolute top-0 right-0 bg-[#ef4444] text-white font-bold text-xs px-2 py-1 font-mono">ALTA VELOCIDAD</div>
+                                <h5 class="text-lg font-bold text-[#ef4444] mb-3">Soporte L3 / Resolución Crítica On-Demand</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Servicio de 'Bombero L3': Resuelvo los bugs críticos y cuellos de botella en bases de datos que tu equipo de devs junior no puede solucionar en menos de 48 hs."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Agencias de software / Empresas SaaS.</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$2k - $4k USD (Retainer mensual)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">POR QUÉ ES IDEAL PARA VOS</span> Intervenciones quirúrgicas, rápidas y precisas. Arreglás el RCA y salís. Cero estrés de reuniones largas.</div>
+                                </div>
                             </div>
+
+                            <!-- Oferta 3 -->
+                            <div id="panel-3" class="offer-panel">
+                                <div class="absolute top-0 right-0 bg-[#a855f7] text-white font-bold text-xs px-2 py-1 font-mono">ESCALABLE 1 a MUCHOS</div>
+                                <h5 class="text-lg font-bold text-[#a855f7] mb-3">Mentoría Arquitectura Java (B2C)</h5>
+                                <p class="text-xl font-medium leading-relaxed mb-4">
+                                    "Ayudo a Desarrolladores Java Junior/Mid a dominar Arquitecturas Críticas (Spring Boot + Microservicios) en 8 semanas para conseguir posiciones Senior."
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6 border-t border-delta-border pt-4">
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">NICHO OBJETIVO</span> <span class="font-bold">Programadores estancados.</span></div>
+                                    <div><span class="text-delta-muted font-mono text-xs block mb-1">PROYECCIÓN DE TICKET</span> <span class="font-bold text-green-500">$1,000 - $2,500 USD (Por alumno)</span></div>
+                                    <div class="md:col-span-2"><span class="text-delta-muted font-mono text-xs block mb-1">POR QUÉ ES IDEAL PARA VOS</span> Cero clientes corporativos. Vos dictás las reglas, educás a tu ritmo y es 100% escalable.</div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -201,16 +257,16 @@
                         03
                     </div>
                     
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center pointer-events-none">
                         <div>
                             <h3 class="text-sm font-mono text-delta-accent mb-1">/ SISTEMA DE ADQUISICIÓN (ROL DELTA)</h3>
-                            <h4 class="text-2xl font-bold">La Máquina de Prospectos</h4>
+                            <h4 class="text-2xl font-bold">La Máquina de Prospectos Automatizada</h4>
                         </div>
                         <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
                     </div>
                     
-                    <div class="node-content">
-                        <p class="text-delta-muted mb-6 text-sm">Vos sos experto en código, no en marketing. Delta asume el riesgo y el trabajo sucio. Instalamos nuestro sistema de prospección B2B en tu LinkedIn.</p>
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
+                        <p class="text-delta-muted mb-6 text-sm">Vos sos experto resolviendo problemas críticos, no buscando clientes. Delta asume el trabajo sucio. Instalamos nuestro sistema de prospección y automatización.</p>
                         
                         <div class="space-y-4">
                             <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
@@ -218,18 +274,18 @@
                                     <i class="fa-brands fa-linkedin-in text-xl"></i>
                                 </div>
                                 <div>
-                                    <h6 class="font-bold mb-1">Optimización de Perfil (Inbound)</h6>
-                                    <p class="text-xs text-delta-muted">Transformamos tu perfil de "Buscando empleo" a una Landing Page de ventas (Banner, Titular, Casos de éxito con Cementos Moctezuma y Minsait).</p>
+                                    <h6 class="font-bold mb-1">Outbound Directo a CTOs</h6>
+                                    <p class="text-xs text-delta-muted">Campaña a través de LinkedIn Sales Navigator. Interceptamos a CTOs en el momento exacto en que sus sistemas legacy les duelen, y les enviamos un documento de valor escrito con tu conocimiento.</p>
                                 </div>
                             </div>
                             
                             <div class="flex items-start gap-4 p-4 bg-delta-bg border border-delta-border rounded-lg">
-                                <div class="w-10 h-10 rounded bg-delta-accent/20 text-delta-accent flex items-center justify-center shrink-0">
+                                <div class="w-10 h-10 rounded bg-purple-900/20 text-purple-500 flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-robot text-xl"></i>
                                 </div>
                                 <div>
-                                    <h6 class="font-bold mb-1">Prospección Outbound con Sales Nav</h6>
-                                    <p class="text-xs text-delta-muted">Creamos campañas automatizadas atacando a CTOs y Directores de IT con mensajes directos al dolor ("¿Su sistema COBOL se está quedando obsoleto?").</p>
+                                    <h6 class="font-bold mb-1">Inbound Automatizado (Manychat)</h6>
+                                    <p class="text-xs text-delta-muted">Optimizamos tu Instagram. Subimos contenido corto tuyo explicando problemas. Un Bot (Manychat) entrega recursos gratis y califica al prospecto de forma automática mientras vos dormís.</p>
                                 </div>
                             </div>
                         </div>
@@ -237,12 +293,12 @@
                 </div>
 
                 <!-- Fase 4 -->
-                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group glow-border" onclick="toggleNode(this)">
+                <div class="node-card bg-delta-panel border border-delta-border rounded-xl p-6 relative cursor-pointer group" onclick="toggleNode(this)">
                     <div class="step-number absolute -left-[45px] top-6 w-8 h-8 rounded-full bg-delta-bg border border-delta-border flex items-center justify-center font-mono text-xs font-bold text-delta-muted z-10 group-hover:border-delta-accent group-hover:text-delta-accent">
                         04
                     </div>
                     
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center pointer-events-none">
                         <div>
                             <h3 class="text-sm font-mono text-delta-accent mb-1">/ EJECUCIÓN Y ASOCIACIÓN</h3>
                             <h4 class="text-2xl font-bold">El Trato (Shadow Operation)</h4>
@@ -250,18 +306,18 @@
                         <i class="fa-solid fa-chevron-down text-delta-muted transition-transform duration-300"></i>
                     </div>
                     
-                    <div class="node-content">
+                    <div class="node-content cursor-default" onclick="event.stopPropagation()">
                         <div class="bg-delta-bg p-6 rounded-lg border border-delta-border">
                             <p class="text-sm text-delta-muted mb-6 leading-relaxed">
-                                No te voy a cobrar una mentoría. Me voy a asociar con vos. 
-                                Yo construyo el embudo, prospecto a los CTOs y te agendo las llamadas. 
-                                Vos te presentás como la autoridad técnica, cerrás el trato y entregás la migración.
+                                No te voy a cobrar un curso para enseñarte a vender. Me voy a asociar con vos. 
+                                Yo manejo los DM, los robots y te agendo las llamadas pre-filtradas. 
+                                Vos te presentás como la autoridad técnica, demostrás tu conocimiento y cerrás la consultoría.
                             </p>
                             
                             <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-delta-panel p-4 rounded border border-[#333]">
                                 <div class="text-center md:text-left">
                                     <span class="block font-mono text-xs text-delta-muted mb-1">TU ÚNICA TAREA</span>
-                                    <span class="font-bold text-white">Atender llamadas y ejecutar código.</span>
+                                    <span class="font-bold text-white">Atender citas calificadas y facturar.</span>
                                 </div>
                                 <div class="text-center md:text-right">
                                     <span class="block font-mono text-xs text-delta-muted mb-1">VALOR PROYECTADO MENSUAL</span>
@@ -281,29 +337,54 @@
     </main>
 
     <script>
-        function toggleNode(element) {
-            // Cierra los otros nodos
+        // Lógica de Acordeón
+        function toggleNode(element, event) {
+            if(event && event.target.tagName === 'BUTTON') return; // Evitar que colapse si toco un botón
+
+            const isActive = element.classList.contains('active');
+            
+            // Cierra todos
             document.querySelectorAll('.node-card').forEach(card => {
-                if(card !== element) {
-                    card.classList.remove('active');
-                    card.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
-                }
+                card.classList.remove('active');
+                card.classList.remove('glow-border');
+                const icon = card.querySelector('.fa-chevron-down');
+                if(icon) icon.style.transform = 'rotate(0deg)';
+                const headerIcon = card.querySelector('h4').parentNode.parentNode.querySelector('i');
+                if(headerIcon) headerIcon.classList.remove('text-delta-accent');
+                if(headerIcon) headerIcon.classList.add('text-delta-muted');
             });
 
-            // Toggle actual
-            element.classList.toggle('active');
-            const icon = element.querySelector('.fa-chevron-down');
-            if (element.classList.contains('active')) {
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                icon.style.transform = 'rotate(0deg)';
+            // Si no estaba activo, lo abre
+            if (!isActive) {
+                element.classList.add('active');
+                element.classList.add('glow-border');
+                const icon = element.querySelector('.fa-chevron-down');
+                if(icon) {
+                    icon.style.transform = 'rotate(180deg)';
+                    icon.classList.remove('text-delta-muted');
+                    icon.classList.add('text-delta-accent');
+                }
             }
         }
         
-        // Abrir el primero por defecto al cargar
-        setTimeout(() => {
-            toggleNode(document.querySelectorAll('.node-card')[0]);
-        }, 500);
+        // Lógica del Slider de Ofertas
+        function switchOffer(index) {
+            // Resetear botones
+            document.querySelectorAll('.offer-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Resetear paneles
+            document.querySelectorAll('.offer-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            // Activar seleccionados
+            document.getElementById(`tab-${index}`).classList.add('active');
+            document.getElementById(`panel-${index}`).classList.add('active');
+        }
+
+        // Dejar abierto el Nivel 2 por defecto para que vea las ofertas rápido en la demo
+        // (Ya está con class active en el HTML, pero aseguramos el diseño de los íconos)
     </script>
 </body>
 </html>
