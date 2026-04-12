@@ -55,9 +55,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            /* Scale down for preview if needed, but keeps exact proportions */
-            transform-origin: center;
-            zoom: 0.7; 
+            /* Escala eliminada para renderizado 1:1 perfecto */
         }
 
         .glass-panel {
@@ -111,10 +109,13 @@
         <div class="ambient-glow top-[-400px] right-[-200px]"></div>
         <div class="ambient-glow bottom-[-500px] left-[-200px]" style="background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(0,0,0,0) 60%);"></div>
 
-
+        <!-- Visual guide for where the profile pic goes (so we don't put text here) -->
+        <div class="profile-safe-zone font-sans text-sm">
+            ZONA FOTO<br>DE PERFIL<br>(LinkedIn la tapa)
+        </div>
 
         <!-- Main Content Area - Shifted to Center/Right to avoid profile pic -->
-        <div class="absolute inset-0 flex flex-col justify-center pl-[360px] pr-16 z-10">
+        <div class="absolute inset-0 flex flex-col justify-center pl-[380px] pr-16 z-10">
             
             <!-- Top Badge & Agency watermark -->
             <div class="flex justify-between items-center mb-6">
@@ -124,6 +125,7 @@
                 </div>
                 
                 <div class="flex items-center gap-2 opacity-50">
+                    <span class="text-xs uppercase tracking-widest font-semibold text-white/50">Powered by</span>
                     <svg class="w-5 h-5 text-brand-accent" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2L22 20H2L12 2Z" />
                     </svg>
@@ -161,7 +163,7 @@
         </div>
     </div>
 
-    <!-- Instructions overlay for Juanma (not part of the banner) -->
+    <!-- Instrucciones eliminadas para que no molesten en el DOM -->
 
     <script>
         lucide.createIcons();
